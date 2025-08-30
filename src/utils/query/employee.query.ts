@@ -1,8 +1,8 @@
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 
-export const findAllSociety = async (filter?: Prisma.SocietyWhereInput) => {
-  const data = await prisma.society.findMany({
+export const findAllEmployee = async (filter?: Prisma.EmployeeWhereInput) => {
+  const data = await prisma.employee.findMany({
     where: filter,
     include: {
       portfolios: true,
@@ -14,8 +14,8 @@ export const findAllSociety = async (filter?: Prisma.SocietyWhereInput) => {
   return data;
 };
 
-export const findSociety = async (filter: Prisma.SocietyWhereInput) => {
-  const data = await prisma.society.findFirst({
+export const findEmployee = async (filter: Prisma.EmployeeWhereInput) => {
+  const data = await prisma.employee.findFirst({
     where: filter,
     include: {
       portfolios: true,
@@ -27,8 +27,8 @@ export const findSociety = async (filter: Prisma.SocietyWhereInput) => {
   return data;
 };
 
-export const createSociety = async (data: Prisma.SocietyUncheckedCreateInput) => {
-  const Society = await prisma.society.create({
+export const createEmployee = async (data: Prisma.EmployeeUncheckedCreateInput) => {
+  const Employee = await prisma.employee.create({
     data,
     include: {
       portfolios: true,
@@ -38,10 +38,10 @@ export const createSociety = async (data: Prisma.SocietyUncheckedCreateInput) =>
       _count: true,
     },
   });
-  return Society;
+  return Employee;
 };
-export const updateSociety = async (filter: Prisma.SocietyWhereUniqueInput, data: Prisma.SocietyUncheckedUpdateInput) => {
-  const Society = await prisma.society.update({
+export const updateEmployee = async (filter: Prisma.EmployeeWhereUniqueInput, data: Prisma.EmployeeUncheckedUpdateInput) => {
+  const Employee = await prisma.employee.update({
     where: filter,
     data,
     include: {
@@ -51,10 +51,10 @@ export const updateSociety = async (filter: Prisma.SocietyWhereUniqueInput, data
       _count: true,
     },
   });
-  return Society;
+  return Employee;
 };
-export const deleteSociety = async (id: string) => {
-  const del = await prisma.society.delete({
+export const deleteEmployee = async (id: string) => {
+  const del = await prisma.employee.delete({
     where: { id },
   });
   return del;

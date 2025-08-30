@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
-import { Navigation } from "../_components/Navigation";
+import { Navigation } from "../../components/Navigation";
 
 export const metadata: Metadata = {
   title: "Register or Login | Job Seeker App",

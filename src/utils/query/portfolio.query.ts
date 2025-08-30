@@ -5,7 +5,7 @@ export const findAllPortfolio = async (filter?: Prisma.PortfolioWhereInput) => {
   const data = await prisma.portfolio.findMany({
     where: filter,
     include: {
-      Society: true,
+      Employee: true,
     },
   });
   return data;
@@ -15,7 +15,7 @@ export const findPortfolio = async (filter: Prisma.PortfolioWhereInput) => {
   const data = await prisma.portfolio.findFirst({
     where: filter,
     include: {
-      Society: true,
+      Employee: true,
     },
   });
   return data;
@@ -25,7 +25,7 @@ export const createPortfolio = async (data: Prisma.PortfolioUncheckedCreateInput
   const Portfolio = await prisma.portfolio.create({
     data,
     include: {
-      Society: true,
+      Employee: true,
     },
   });
   return Portfolio;
@@ -35,7 +35,7 @@ export const updatePortfolio = async (id: string, data: Prisma.PortfolioUnchecke
     where: { id },
     data,
     include: {
-      Society: true,
+      Employee: true,
     },
   });
   return Portfolio;

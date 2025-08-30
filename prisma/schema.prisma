@@ -16,6 +16,7 @@ datasource db {
 // =========================
 enum userRole {
   USER
+  EMPLOYEE
   HRD
   ADMIN
 }
@@ -43,36 +44,36 @@ model User {
   profile_picture String?
   role            userRole @default(USER)
   verified        Boolean  @default(false)
-
+  last_login      DateTime? 
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Society                 Society?
-  company                 Company[]
-  emailVerificationToken  EmailVerificationToken?
+  Employee               Employee?
+  emailVerificationToken EmailVerificationToken?
+  HumanResource          HumanResource?
 
   @@map("users")
 }
 
 model EmailVerificationToken {
-  id        String   @id @default(cuid())
-  token     String   @unique
-  expires   DateTime
+  id      String   @id @default(cuid())
+  token   String   @unique
+  expires DateTime
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId    String?   @unique
-  user      User?     @relation(fields: [userId], references: [id])
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id])
 }
 
-model Society {
-  id            String   @id @default(cuid())
+model Employee {
+  id            String    @id @default(cuid())
   name          String
-  phone         String
-  date_of_birth DateTime
-  gender        String
+  phone         String?
+  date_of_birth DateTime?
+  gender        String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -82,12 +83,25 @@ model Society {
 
   portfolios      Portfolio[]
   positionApplied PositionApplied[]
-  address        Address[]
+  address         Address[]
+  Company         Company?          @relation(fields: [companyId], references: [id])
+  companyId       String?
 
   @@map("societies")
 }
 
-model Address{
+model HumanResource {
+  id       String @id @default(cuid())
+  name     String
+  position String
+
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  Company Company?
+}
+
+model Address {
   id      String @id @default(cuid())
   street  String
   city    String
@@ -95,11 +109,10 @@ model Address{
   country String
   zip     String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  societyId String?
-  Society   Society? @relation(fields: [societyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  Employee   Employee? @relation(fields: [employeeId], references: [id])
+  employeeId String?
 
   @@map("addresses")
 }
@@ -113,8 +126,8 @@ model Portfolio {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  societyId String?
-  Society   Society? @relation(fields: [societyId], references: [id], onDelete: Cascade)
+  employeeId String?
+  Employee   Employee? @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 
   @@map("portfolios")
 }
@@ -128,14 +141,16 @@ model Company {
   website     String?
   logo        String?
   description String  @db.Text
+  type        String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId String?
-  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  humanResource   HumanResource? @relation(fields: [humanResourceId], references: [id])
+  humanResourceId String?        @unique
 
-  availablePosition AvailablePosition[]
+  employees          Employee[]
+  availablePositions AvailablePosition[]
 
   @@map("companies")
 }
@@ -149,6 +164,8 @@ model AvailablePosition {
   status              jobStatus @default(OPEN)
   submissionStartDate DateTime
   submissionEndDate   DateTime
+  salaryStartRange    Float?
+  salaryEndRange      Float?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -166,8 +183,8 @@ model PositionApplied {
   applyingStatus applyingStatus @default(PENDING)
   applyDate      DateTime       @default(now())
 
-  societyId String?
-  Society   Society? @relation(fields: [societyId], references: [id])
+  employeeId String?
+  Employee   Employee? @relation(fields: [employeeId], references: [id])
 
   availablePositionId String?
   AvailablePosition   AvailablePosition? @relation(fields: [availablePositionId], references: [id], onDelete: Cascade)

@@ -60,6 +60,16 @@ export function Navigation() {
             <Link href="/about" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
               Tentang Kami
             </Link>
+            {session?.user?.role === "HRD" && (
+              <Link href="/hrd" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                HRD Panel
+              </Link>
+            )}
+            {session?.user?.role === "ADMIN" && (
+              <Link href="/admin" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                Admin Panel
+              </Link>
+            )}
           </div>
 
           {/* Desktop Auth Buttons */}
@@ -100,13 +110,15 @@ export function Navigation() {
                 <DropdownMenuSeparator />
 
                 {/* Menu Items */}
-                <DropdownMenuItem onClick={() => router.push("/profile")} className="cursor-pointer hover:bg-blue-50 focus:bg-blue-50">
-                  <User className="h-4 w-4 mr-3 text-gray-600" />
-                  <div className="flex flex-col">
-                    <span className="font-medium">Profil Saya</span>
-                    <span className="text-xs text-gray-500">Kelola informasi pribadi</span>
-                  </div>
-                </DropdownMenuItem>
+                {["USER", "EMPLOYEE"].includes(session.user?.role as string) && (
+                  <DropdownMenuItem onClick={() => router.push("/profile")} className="cursor-pointer hover:bg-blue-50 focus:bg-blue-50">
+                    <User className="h-4 w-4 mr-3 text-gray-600" />
+                    <div className="flex flex-col">
+                      <span className="font-medium">Profil Saya</span>
+                      <span className="text-xs text-gray-500">Kelola informasi pribadi</span>
+                    </div>
+                  </DropdownMenuItem>
+                )}
 
                 <DropdownMenuSeparator />
 
@@ -164,6 +176,16 @@ export function Navigation() {
                 <Link href="/about" className="text-lg font-medium text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsOpen(false)}>
                   Tentang Kami
                 </Link>
+                {session?.user?.role === "HRD" && (
+                  <Link href="/hrd" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                    HRD Panel
+                  </Link>
+                )}
+                {session?.user?.role === "ADMIN" && (
+                  <Link href="/admin" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                    Admin Panel
+                  </Link>
+                )}
                 <div className="border-t pt-4 space-y-2">
                   <Link href="/login" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" className="w-full justify-start text-blue-600 border-blue-200 hover:bg-blue-50 bg-transparent">

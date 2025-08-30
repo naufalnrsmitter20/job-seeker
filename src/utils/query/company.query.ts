@@ -5,9 +5,13 @@ export const findAllCompany = async (filter?: Prisma.CompanyWhereInput) => {
   const data = await prisma.company.findMany({
     where: filter,
     include: {
-      availablePosition: true,
-      User: true,
+      availablePositions: true,
+      employees: true,
+      humanResource: true,
       _count: true,
+    },
+    orderBy: {
+      updatedAt: "desc",
     },
   });
   return data;
@@ -17,8 +21,9 @@ export const findCompany = async (filter: Prisma.CompanyWhereInput) => {
   const data = await prisma.company.findFirst({
     where: filter,
     include: {
-      availablePosition: true,
-      User: true,
+      availablePositions: true,
+      employees: true,
+      humanResource: true,
       _count: true,
     },
   });
@@ -29,20 +34,22 @@ export const createCompany = async (data: Prisma.CompanyUncheckedCreateInput) =>
   const Company = await prisma.company.create({
     data,
     include: {
-      availablePosition: true,
-      User: true,
+      availablePositions: true,
+      employees: true,
+      humanResource: true,
       _count: true,
     },
   });
   return Company;
 };
-export const updateCompany = async (id: string, data: Prisma.CompanyUncheckedUpdateInput) => {
+export const updateCompany = async (filter: Prisma.CompanyWhereUniqueInput, data: Prisma.CompanyUncheckedUpdateInput) => {
   const Company = await prisma.company.update({
-    where: { id },
+    where: filter,
     data,
     include: {
-      availablePosition: true,
-      User: true,
+      availablePositions: true,
+      employees: true,
+      humanResource: true,
       _count: true,
     },
   });

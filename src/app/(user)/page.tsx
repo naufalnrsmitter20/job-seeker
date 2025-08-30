@@ -4,46 +4,32 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Search, MapPin, Clock, Users, Building2, TrendingUp, Shield, Award } from "lucide-react";
+import prisma from "@/lib/prisma";
+import EmptyData from "@/components/global/empty-data";
+import { formatDate } from "@/lib/format";
 
-export default function HomePage() {
-  const featuredJobs = [
-    {
-      id: 1,
-      title: "Software Engineer",
-      company: "PT Teknologi Nusantara",
-      location: "Jakarta",
-      type: "Full-time",
-      salary: "Rp 8.000.000 - 15.000.000",
-      posted: "2 hari yang lalu",
-      logo: "🏢",
-    },
-    {
-      id: 2,
-      title: "Digital Marketing Specialist",
-      company: "CV Kreatif Indonesia",
-      location: "Bandung",
-      type: "Full-time",
-      salary: "Rp 5.000.000 - 8.000.000",
-      posted: "1 hari yang lalu",
-      logo: "🎯",
-    },
-    {
-      id: 3,
-      title: "Data Analyst",
-      company: "PT Analitik Cerdas",
-      location: "Surabaya",
-      type: "Remote",
-      salary: "Rp 6.000.000 - 10.000.000",
-      posted: "3 hari yang lalu",
-      logo: "📊",
-    },
-  ];
+export default async function HomePage() {
+  const [featuredJobs, availablePositions, positionApplied, user, company] = await Promise.all([
+    prisma.availablePosition.findMany({
+      include: { Company: true },
+    }),
+    prisma.availablePosition.count({
+      where: { status: "OPEN" },
+    }),
+    prisma.positionApplied.count({
+      where: { applyingStatus: "ACCEPTED" },
+    }),
+    prisma.user.count({
+      where: { role: "USER" },
+    }),
+    prisma.company.count(),
+  ]);
 
   const stats = [
-    { icon: Users, label: "Pencari Kerja Aktif", value: "150,000+" },
-    { icon: Building2, label: "Perusahaan Terdaftar", value: "5,000+" },
-    { icon: TrendingUp, label: "Lowongan Tersedia", value: "25,000+" },
-    { icon: Award, label: "Berhasil Ditempatkan", value: "75,000+" },
+    { icon: Users, label: "Pencari Kerja Aktif", value: `${user}` },
+    { icon: Building2, label: "Perusahaan Terdaftar", value: `${company}` },
+    { icon: TrendingUp, label: "Lowongan Tersedia", value: `${availablePositions}` },
+    { icon: Award, label: "Berhasil Ditempatkan", value: `${positionApplied}` },
   ];
 
   return (
@@ -105,12 +91,12 @@ export default function HomePage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white/10 rounded-xl p-4">
-                      <div className="text-2xl font-bold">25</div>
+                      <div className="text-2xl font-bold">{positionApplied}</div>
                       <div className="text-sm opacity-90">Lamaran Terkirim</div>
                     </div>
                     <div className="bg-white/10 rounded-xl p-4">
-                      <div className="text-2xl font-bold">8</div>
-                      <div className="text-sm opacity-90">Interview</div>
+                      <div className="text-2xl font-bold">{availablePositions}</div>
+                      <div className="text-sm opacity-90">Posisi Tersedia</div>
                     </div>
                   </div>
                 </div>
@@ -144,39 +130,44 @@ export default function HomePage() {
             <h2 className="text-3xl lg:text-4xl font-bold text-blue-900 mb-4">Lowongan Kerja Terbaru</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">Temukan peluang karir terbaik dari perusahaan-perusahaan terpercaya di Indonesia</p>
           </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {featuredJobs.map((job) => (
-              <Card key={job.id} className="hover:shadow-lg transition-shadow border-0 bg-white">
-                <CardHeader className="pb-4">
-                  <div className="flex items-start justify-between">
-                    <div className="text-3xl">{job.logo}</div>
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                      {job.type}
-                    </Badge>
-                  </div>
-                  <CardTitle className="text-xl text-blue-900">{job.title}</CardTitle>
-                  <CardDescription className="text-gray-600 font-medium">{job.company}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center text-gray-600">
-                    <MapPin className="h-4 w-4 mr-2" />
-                    {job.location}
-                  </div>
-                  <div className="text-lg font-semibold text-blue-600">{job.salary}</div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Clock className="h-4 w-4 mr-1" />
-                      {job.posted}
+          {featuredJobs.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {featuredJobs.map((job) => (
+                <Card key={job.id} className="hover:shadow-lg transition-shadow border-0 bg-white">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between">
+                      <div className="text-3xl">{job.Company.logo as string}</div>
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                        {job.status === "OPEN" ? "Tersedia" : "Ditutup"}
+                      </Badge>
                     </div>
-                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                      Lamar Sekarang
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    <CardTitle className="text-xl text-blue-900">{job.positionName}</CardTitle>
+                    <CardDescription className="text-gray-600 font-medium">{job.Company.name}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center text-gray-600">
+                      <MapPin className="h-4 w-4 mr-2" />
+                      {job.Company.address}
+                    </div>
+                    <div className="text-lg font-semibold text-blue-600">
+                      {job.salaryStartRange} - {job.salaryEndRange}
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Clock className="h-4 w-4 mr-1" />
+                        {formatDate(job.updatedAt)}
+                      </div>
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                        Lamar Sekarang
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <EmptyData title="Lowongan Kerja" />
+          )}
 
           <div className="text-center">
             <Link href="/jobs">

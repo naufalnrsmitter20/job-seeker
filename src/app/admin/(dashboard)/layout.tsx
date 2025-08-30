@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
+import { DashboardShell } from "@/components/dashboard-sidebar";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 export const metadata: Metadata = {
-  title: "Admin | Job Seeker App",
+  title: "Admin Panel | Job Seeker App",
   description: "A platform for job seekers and companies",
 };
 
@@ -11,5 +13,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return (
+    <NuqsAdapter>
+      <DashboardShell>{children}</DashboardShell>
+    </NuqsAdapter>
+  );
 }

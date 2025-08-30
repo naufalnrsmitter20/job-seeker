@@ -6,7 +6,7 @@ export const findAllPositionApplied = async (filter?: Prisma.PositionAppliedWher
     where: filter,
     include: {
       AvailablePosition: true,
-      Society: true,
+      Employee: true,
     },
   });
   return data;
@@ -17,7 +17,7 @@ export const findPositionApplied = async (filter: Prisma.PositionAppliedWhereInp
     where: filter,
     include: {
       AvailablePosition: true,
-      Society: true,
+      Employee: true,
     },
   });
   return data;
@@ -28,7 +28,7 @@ export const createPositionApplied = async (data: Prisma.PositionAppliedUnchecke
     data,
     include: {
       AvailablePosition: true,
-      Society: true,
+      Employee: true,
     },
   });
   return PositionApplied;
@@ -39,7 +39,7 @@ export const updatePositionApplied = async (id: string, data: Prisma.PositionApp
     data,
     include: {
       AvailablePosition: true,
-      Society: true,
+      Employee: true,
     },
   });
   return PositionApplied;

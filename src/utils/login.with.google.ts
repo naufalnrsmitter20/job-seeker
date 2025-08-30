@@ -11,10 +11,11 @@ export const loginWithGoogle = async (user: AdapterUser | User) => {
     profile_picture: user.image || "https://res.cloudinary.com/dvwhepqbd/image/upload/v1720580914/pgfrhzaobzcajvugl584.png",
     role: "USER",
     password: "",
+    last_login: new Date(),
     createdAt: new Date(),
     updatedAt: new Date(),
     verified: true,
-    Society: {
+    Employee: {
       create: {
         name: user.name || (user?.email?.split("@")[0] as string),
         phone: "",

@@ -13,7 +13,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff, Mail, Lock, User, Building2, Phone, MapPin, CheckCircle, ArrowLeft } from "lucide-react";
 import toast from "react-hot-toast";
-import { registerUser } from "@/utils/actions/user.actions";
+import { registerHumanResource, registerUser } from "@/utils/actions/user.actions";
+import Google from "../../../../public/img/svg/JSX/google";
+import { signIn } from "next-auth/react";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +24,7 @@ export default function RegisterPage() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleRegisterEmployee = async (e: React.FormEvent) => {
     e.preventDefault();
     setSuccess(false);
     const toastId = toast.loading("Mendaftar...");
@@ -32,7 +34,6 @@ export default function RegisterPage() {
       return;
     }
     try {
-      setIsLoading(true);
       const formData = new FormData(e.currentTarget as HTMLFormElement);
       const firstname = formData.get("firstName") as string;
       const lastname = formData.get("lastName") as string;
@@ -47,6 +48,52 @@ export default function RegisterPage() {
       toast.success("Pendaftaran berhasil! Silakan masuk", { id: toastId });
       setIsLoading(false);
       setSuccess(true);
+    } catch (error) {
+      console.error(error);
+      toast.error("Gagal mendaftar, silakan coba lagi", { id: toastId });
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegisterHRD = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSuccess(false);
+    const toastId = toast.loading("Mendaftar...");
+    setIsLoading(true);
+    if (!agreedToTerms) {
+      toast.error("Anda harus menyetujui syarat dan ketentuan", { id: toastId });
+      return;
+    }
+    try {
+      const formData = new FormData(e.currentTarget as HTMLFormElement);
+      const regist = await registerHumanResource(formData);
+      if (regist.error) {
+        toast.error(regist.message, { id: toastId });
+        setIsLoading(false);
+        return;
+      }
+      toast.success("Pendaftaran HRD berhasil! Silakan masuk", { id: toastId });
+      setIsLoading(false);
+      setSuccess(true);
+    } catch (error) {
+      console.error(error);
+      toast.error("Gagal mendaftar, silakan coba lagi", { id: toastId });
+      setIsLoading(false);
+    }
+  };
+
+  const handleLoginWithGoogle = async () => {
+    const toastId = toast.loading("Masuk dengan Google...");
+    setIsLoading(true);
+    try {
+      const response = await signIn("google", { callbackUrl: "/", redirect: false });
+      if (response?.error) {
+        toast.error("Gagal masuk dengan Google, silakan coba lagi", { id: toastId });
+        setIsLoading(false);
+        return;
+      }
+      toast.success("Berhasil masuk dengan Google", { id: toastId });
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
       toast.error("Gagal mendaftar, silakan coba lagi", { id: toastId });
@@ -75,7 +122,7 @@ export default function RegisterPage() {
 
             <div className="space-y-3">
               <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Selamat! Pendaftaran Berhasil</h2>
-              <p className="text-gray-600 leading-relaxed">Akun Anda telah berhasil dibuat. Selamat datang di komunitas Senara! Silakan cek email untuk verifikasi akun.</p>
+              <p className="text-gray-600 leading-relaxed">Akun Anda telah berhasil dibuat. Selamat datang di Job Seeker Indonesia! Silakan cek email untuk verifikasi akun.</p>
             </div>
 
             <div className="bg-green-50 border border-green-200 rounded-xl p-4">
@@ -133,7 +180,7 @@ export default function RegisterPage() {
               </TabsList>
 
               <TabsContent value="jobseeker">
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleRegisterEmployee} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName">Nama Depan</Label>
@@ -221,34 +268,33 @@ export default function RegisterPage() {
               </TabsContent>
 
               <TabsContent value="hrd">
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleRegisterHRD} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="companyName">Nama Perusahaan</Label>
+                    <Label htmlFor="name">Nama Lengkap HRD</Label>
                     <div className="relative">
-                      <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                      <Input id="companyName" type="text" placeholder="PT. Nama Perusahaan" className="pl-10 h-11" required />
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                      <Input name="name" id="name" type="text" placeholder="Nama lengkap" className="pl-10 h-11" required />
                     </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="position">Posisi/Jabatan</Label>
+                    <Input name="position" id="position" type="text" placeholder="HR Manager" className="h-11" required />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="hrdName">Nama Lengkap HRD</Label>
+                      <Label htmlFor="companyName">Nama Perusahaan</Label>
                       <div className="relative">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                        <Input id="hrdName" type="text" placeholder="Nama lengkap" className="pl-10 h-11" required />
+                        <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                        <Input name="companyName" id="companyName" type="text" placeholder="PT. Nama Perusahaan" className="pl-10 h-11" required />
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="position">Posisi/Jabatan</Label>
-                      <Input id="position" type="text" placeholder="HR Manager" className="h-11" required />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="companyEmail">Email Perusahaan</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                      <Input id="companyEmail" type="email" placeholder="hrd@perusahaan.com" className="pl-10 h-11" required />
+                      <Label htmlFor="companyEmail">Email Perusahaan</Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                        <Input name="companyEmail" id="companyEmail" type="email" placeholder="hrd@perusahaan.com" className="pl-10 h-11" required />
+                      </div>
                     </div>
                   </div>
 
@@ -257,12 +303,12 @@ export default function RegisterPage() {
                       <Label htmlFor="companyPhone">Telepon Perusahaan</Label>
                       <div className="relative">
                         <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                        <Input id="companyPhone" type="tel" placeholder="021-xxxxxxxx" className="pl-10 h-11" required />
+                        <Input name="companyPhone" id="companyPhone" type="tel" placeholder="021-xxxxxxxx" className="pl-10 h-11" required />
                       </div>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="industry">Industri</Label>
-                      <Select required>
+                      <Select name="industry" required>
                         <SelectTrigger className="h-11">
                           <SelectValue placeholder="Pilih industri" />
                         </SelectTrigger>
@@ -282,26 +328,26 @@ export default function RegisterPage() {
                     <Label htmlFor="companyAddress">Alamat Perusahaan</Label>
                     <div className="relative">
                       <MapPin className="absolute left-3 top-3 text-gray-400 h-4 w-4" />
-                      <Input id="companyAddress" type="text" placeholder="Alamat lengkap perusahaan" className="pl-10 h-11" required />
+                      <Input name="companyAddress" id="companyAddress" type="text" placeholder="Alamat lengkap perusahaan" className="pl-10 h-11" required />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="hrdPassword">Password</Label>
+                      <Label htmlFor="password">Password</Label>
                       <div className="relative">
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                        <Input id="hrdPassword" type={showPassword ? "text" : "password"} placeholder="Minimal 8 karakter" className="pl-10 pr-10 h-11" required />
+                        <Input name="password" id="password" type={showPassword ? "text" : "password"} placeholder="Minimal 8 karakter" className="pl-10 pr-10 h-11" required />
                         <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
                           {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="hrdConfirmPassword">Konfirmasi Password</Label>
+                      <Label htmlFor="confirmPassword">Konfirmasi Password</Label>
                       <div className="relative">
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                        <Input id="hrdConfirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder="Ulangi password" className="pl-10 pr-10 h-11" required />
+                        <Input name="confirmPassword" id="confirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder="Ulangi password" className="pl-10 pr-10 h-11" required />
                         <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
                           {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
@@ -328,16 +374,25 @@ export default function RegisterPage() {
                   </Button>
                 </form>
               </TabsContent>
-            </Tabs>
 
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
-                Sudah punya akun?{" "}
-                <Link href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
-                  Masuk sekarang
-                </Link>
-              </p>
-            </div>
+              <div className="mt-6 text-center">
+                <p className="text-sm text-gray-600">
+                  Sudah punya akun?{" "}
+                  <Link href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
+                    Masuk sekarang
+                  </Link>
+                </p>
+              </div>
+              <TabsContent value="jobseeker">
+                <div className="py-6">
+                  <hr className="border-t border-gray-300" />
+                  <Button onClick={handleLoginWithGoogle} type="button" className="w-full h-11 border-2 border-blue-600 bg-transparent hover:bg-blue-50 text-blue-600 flex justify-center items-center" disabled={isLoading}>
+                    <Google />
+                    {isLoading ? "Mendaftar..." : "Daftar Dengan Google"}
+                  </Button>
+                </div>
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
 

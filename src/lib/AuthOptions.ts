@@ -2,10 +2,10 @@ import { AuthOptions, getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import type { DefaultJWT } from "next-auth/jwt";
-import { compare, compareSync, hashSync } from "bcrypt";
+import { compare, compareSync } from "bcrypt";
 import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
-import { createUser, findUser } from "@/utils/query/user.query";
+import { findUser, updateUser } from "@/utils/query/user.query";
 import { loginWithGoogle } from "@/utils/login.with.google";
 
 declare module "next-auth" {
@@ -138,6 +138,7 @@ export const authOptions: AuthOptions = {
         }
         if (user.email) {
           const userDatabase = await findUser({ email: user.email });
+          await updateUser({ email: user.email }, { last_login: new Date() });
           if (!userDatabase) {
             revalidatePath("/");
           }
