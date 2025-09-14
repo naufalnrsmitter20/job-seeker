@@ -7,6 +7,7 @@ import { Search, MapPin, Clock, Users, Building2, TrendingUp, Shield, Award } fr
 import prisma from "@/lib/prisma";
 import EmptyData from "@/components/global/empty-data";
 import { formatDate } from "@/lib/format";
+import Image from "next/image";
 
 export default async function HomePage() {
   const [featuredJobs, availablePositions, positionApplied, user, company] = await Promise.all([
@@ -136,7 +137,7 @@ export default async function HomePage() {
                 <Card key={job.id} className="hover:shadow-lg transition-shadow border-0 bg-white">
                   <CardHeader className="pb-4">
                     <div className="flex items-start justify-between">
-                      <div className="text-3xl">{job.Company.logo as string}</div>
+                      <Image src={job.Company.logo || "https://res.cloudinary.com/demo/image/upload/v1611234567/sample.jpg"} alt={job.Company.name} width={100} height={100} className="w-24 h-24 object-contain rounded" />
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                         {job.status === "OPEN" ? "Tersedia" : "Ditutup"}
                       </Badge>
@@ -146,11 +147,11 @@ export default async function HomePage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex items-center text-gray-600">
-                      <MapPin className="h-4 w-4 mr-2" />
+                      <MapPin className="h-auto w-auto mr-2" />
                       {job.Company.address}
                     </div>
                     <div className="text-lg font-semibold text-blue-600">
-                      {job.salaryStartRange} - {job.salaryEndRange}
+                      Rp. {job.salaryStartRange?.toLocaleString("ID-id")} - Rp. {job.salaryEndRange?.toLocaleString("ID-id")}
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center text-sm text-gray-500">
@@ -158,7 +159,7 @@ export default async function HomePage() {
                         {formatDate(job.updatedAt)}
                       </div>
                       <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                        Lamar Sekarang
+                        <Link href={`/jobs/${job.id}`}>Lamar Sekarang</Link>
                       </Button>
                     </div>
                   </CardContent>

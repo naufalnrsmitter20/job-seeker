@@ -35,6 +35,8 @@ export default async function ProfilePage() {
             orderBy: { applyDate: "desc" },
           },
           Company: true,
+          user: true,
+          _count: true,
         },
       },
     },

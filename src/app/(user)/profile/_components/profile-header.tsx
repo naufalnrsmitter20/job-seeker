@@ -10,12 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Camera, Mail, Phone, Calendar, MapPin, Verified } from "lucide-react";
 import { formatDate } from "@/lib/format";
-import { EmployeeGetPayload, UserGetPayload } from "@/types/entity.relations";
+import { EmployeeGetPayload } from "@/types/entity.relations";
 import toast from "react-hot-toast";
 import { updateUserProfilePicture } from "@/utils/actions/user.actions";
 import { useRouter } from "next/navigation";
+import { User } from "@prisma/client";
 
-export function ProfileHeader({ user, employee }: { user: UserGetPayload; employee: EmployeeGetPayload }) {
+export function ProfileHeader({ user, employee }: { user: User; employee: EmployeeGetPayload }) {
   const [isEditingPhoto, setIsEditingPhoto] = useState(false);
   const [imgValue, setImgValue] = useState<File | undefined>(undefined);
   const [uploading, setUploading] = useState(false);

@@ -38,13 +38,31 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
     }
   };
 
+  const handleDeleteAddress = async (id: string) => {
+    const toastId = toast.loading("Deleting address...");
+    try {
+      const result = await deleteAddressById(id);
+      if (!result.error) {
+        router.refresh();
+        toast.success(result.message, { id: toastId });
+      } else {
+        toast.error(result.message, { id: toastId });
+      }
+    } catch (error) {
+      console.error("Error deleting address:", error);
+      toast.error("Failed to delete address.", { id: toastId });
+    }
+  };
+
   return (
     <Card>
       <div className="space-y-4">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-blue-900">Addresses</CardTitle>
+              <CardTitle className="text-blue-900">
+                Addresses <i>(Max 2)</i>
+              </CardTitle>
               <CardDescription>Manage your address information</CardDescription>
             </div>
             <Dialog open={isCreating} onOpenChange={setIsCreating}>
@@ -148,16 +166,19 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
                       <Button variant="outline" size="sm" onClick={() => setEditingId(address.id)} className="border-blue-200 text-blue-600 bg-transparent">
                         <Pencil className="h-4 w-4" />
                       </Button>
-                      <form
-                        action={async () => {
-                          await deleteAddressById(address.id);
-                          router.refresh();
+                      <Button
+                        onClick={() => {
+                          const confirmation = confirm("Are you sure you want to delete this address?");
+                          if (confirmation) {
+                            handleDeleteAddress(address.id);
+                          }
                         }}
+                        variant="outline"
+                        size="sm"
+                        className="border-red-200 text-red-600 bg-transparent"
                       >
-                        <Button variant="outline" size="sm" className="border-red-200 text-red-600 bg-transparent">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </form>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
                 )}

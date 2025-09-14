@@ -27,10 +27,20 @@ export type HumanResourceGetPayload = Prisma.HumanResourceGetPayload<{
 
 export type CompanyGetPayload = Prisma.CompanyGetPayload<{
   include: {
-    availablePositions: true;
+    availablePositions: {
+      include: {
+        _count: {
+          select: { positionApplied: true };
+        };
+      };
+    };
     employees: true;
     humanResource: true;
-    _count: true;
+    _count: {
+      select: {
+        availablePositions: true;
+      };
+    };
   };
 }>;
 
@@ -42,6 +52,30 @@ export type AvailablePositionPayload = Prisma.AvailablePositionGetPayload<{
       select: {
         positionApplied: true;
       };
+    };
+  };
+}>;
+
+export type AvailablePositionWithPositionApplied = Prisma.AvailablePositionGetPayload<{
+  include: {
+    Company: true;
+    positionApplied: {
+      include: {
+        Employee: {
+          select: {
+            id: true;
+            name: true;
+            user: {
+              select: { name: true };
+            };
+          };
+        };
+      };
+      orderBy: { applyDate: "desc" };
+      take: 5;
+    };
+    _count: {
+      select: { positionApplied: true };
     };
   };
 }>;

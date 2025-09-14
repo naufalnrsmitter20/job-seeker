@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AvailablePositionPayload, UserGetPayload } from "@/types/entity.relations";
+import { AvailablePositionPayload } from "@/types/entity.relations";
 import { ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table";
 import { useState } from "react";
 import { formatDate } from "@/lib/format";
@@ -53,13 +53,28 @@ export default function DataTableListingPage({ data }: DataTableProps) {
     const selectedRows = table.getFilteredSelectedRowModel().rows;
     const dataToExport = selectedRows.length > 0 ? selectedRows.map((row) => row.original) : table.getFilteredRowModel().rows.map((row) => row.original);
 
-    const csvContent = [["Name", "Email", "Role", "Verified", "Created At"].join(","), ...dataToExport.map((user) => [user.name || "", user.email, user.role, user.verified ? "Yes" : "No", formatDate(user.createdAt)].join(","))].join("\n");
+    const csvContent = [
+      ["Position Name", "Capacity", "Description", "Status", "Submission Start Date", "Submission End Date", "Salary Start Range", " Salary End Range", "Position Applied"].join(","),
+      ...dataToExport.map((position) =>
+        [
+          position.positionName || "",
+          position.capacity || "",
+          position.description || "",
+          position.status || "",
+          formatDate(position.submissionStartDate) || "",
+          formatDate(position.submissionEndDate) || "",
+          position.salaryStartRange || "",
+          position.salaryEndRange || "",
+          position.positionApplied.length || "",
+        ].join(",")
+      ),
+    ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `users-${new Date().toISOString().split("T")[0]}.csv`;
+    a.download = `positions-${new Date().toISOString().split("T")[0]}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
   };
@@ -69,11 +84,11 @@ export default function DataTableListingPage({ data }: DataTableProps) {
       {/* Toolbar */}
       <Card>
         <CardHeader className="flex justify-between items-center">
-          <CardTitle className="text-lg">User Data | Filters & Search</CardTitle>
+          <CardTitle className="text-lg">Position Data | Filters & Search</CardTitle>
           <Button
             variant="outline"
             onClick={() => {
-              router.push("/admin/users/new");
+              router.push("/hrd/jobs/new");
             }}
             className="border-blue-200 text-blue-600 bg-transparent"
           >
@@ -90,9 +105,9 @@ export default function DataTableListingPage({ data }: DataTableProps) {
           <div className="flex flex-wrap items-center gap-4">
             {/* Role Filter */}
             <Select
-              value={(table.getColumn("role")?.getFilterValue() as string[])?.join(",") || ""}
+              value={(table.getColumn("status")?.getFilterValue() as string[])?.join(",") || ""}
               onValueChange={(value) => {
-                const column = table.getColumn("role");
+                const column = table.getColumn("status");
                 if (value === "all") {
                   column?.setFilterValue(undefined);
                 } else {
@@ -101,35 +116,12 @@ export default function DataTableListingPage({ data }: DataTableProps) {
               }}
             >
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Roles</SelectItem>
-                <SelectItem value="USER">USER</SelectItem>
-                <SelectItem value="HRD">HRD</SelectItem>
-                <SelectItem value="ADMIN">ADMIN</SelectItem>
-              </SelectContent>
-            </Select>
-
-            {/* Verification Status Filter */}
-            <Select
-              value={(table.getColumn("verified")?.getFilterValue() as boolean[])?.map(String).join(",") || ""}
-              onValueChange={(value) => {
-                const column = table.getColumn("verified");
-                if (value === "all") {
-                  column?.setFilterValue(undefined);
-                } else {
-                  column?.setFilterValue(value.split(",").map((v) => v === "true"));
-                }
-              }}
-            >
-              <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filter by status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="true">Verified</SelectItem>
-                <SelectItem value="false">Unverified</SelectItem>
+                <SelectItem value="OPEN">OPEN</SelectItem>
+                <SelectItem value="CLOSED">CLOSED</SelectItem>
               </SelectContent>
             </Select>
 
@@ -226,7 +218,7 @@ export default function DataTableListingPage({ data }: DataTableProps) {
           </div>
         </CardContent>
       </Card>
-      <p className="text-sm text-muted-foreground">{data.length} user(s) found.</p>
+      <p className="text-sm text-muted-foreground">{data.length} position(s) found.</p>
 
       {/* Pagination */}
       <div className="flex items-center justify-between space-x-2 py-4">

@@ -16,8 +16,16 @@ export const findPositionApplied = async (filter: Prisma.PositionAppliedWhereInp
   const data = await prisma.positionApplied.findFirst({
     where: filter,
     include: {
-      AvailablePosition: true,
-      Employee: true,
+      AvailablePosition: {
+        include: {
+          Company: true,
+        },
+      },
+      Employee: {
+        include: {
+          user: true,
+        },
+      },
     },
   });
   return data;

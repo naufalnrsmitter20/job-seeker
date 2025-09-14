@@ -37,14 +37,14 @@ enum jobStatus {
 // =========================
 
 model User {
-  id              String   @id @default(cuid())
+  id              String    @id @default(cuid())
   name            String
-  email           String   @unique
+  email           String    @unique
   password        String
   profile_picture String?
-  role            userRole @default(USER)
-  verified        Boolean  @default(false)
-  last_login      DateTime? 
+  role            userRole  @default(USER)
+  verified        Boolean   @default(false)
+  last_login      DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -118,10 +118,11 @@ model Address {
 }
 
 model Portfolio {
-  id          String @id @default(cuid())
+  id          String  @id @default(cuid())
   skill       String
   description String
-  file        String
+  file        String?
+  link        String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -159,8 +160,10 @@ model AvailablePosition {
   id                  String    @id @default(cuid())
   positionName        String
   capacity            Int
-  description         String    @db.Text
-  requirements        String    @db.Text
+  about               String    @db.Text
+  description         String[]  @db.Text
+  requirements        String[]  @db.Text
+  benefits            String[]  @db.Text
   status              jobStatus @default(OPEN)
   submissionStartDate DateTime
   submissionEndDate   DateTime

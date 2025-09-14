@@ -79,7 +79,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="border-t border-blue-800 mt-8 pt-8 text-center text-blue-200">
-            <p>&copy; 2024 JobSeeker Indonesia. Semua hak dilindungi undang-undang.</p>
+            <p>&copy; 2025 JobSeeker Indonesia. Semua hak dilindungi undang-undang.</p>
           </div>
         </div>
       </footer>

@@ -11,7 +11,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Job Seeker App",
+  title: "Job Seeker Indonesia",
   description: "A platform for job seekers and companies",
 };
 

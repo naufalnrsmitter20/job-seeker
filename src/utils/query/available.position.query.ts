@@ -25,7 +25,7 @@ export const findAvailablePosition = async (filter: Prisma.AvailablePositionWher
   return data;
 };
 
-export const createAvailablePosition = async (data: Prisma.AvailablePositionUncheckedCreateInput) => {
+export const createAvailablePosition = async (data: Prisma.AvailablePositionCreateInput) => {
   const AvailablePosition = await prisma.availablePosition.create({
     data,
     include: {

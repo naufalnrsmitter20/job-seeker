@@ -10,7 +10,6 @@ import { Briefcase, Building2, CheckCircle2, Clock, FilePieChart, FileText, User
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  // Server Components + Prisma untuk metrik agregasi
   const [totalUsers, totalVerified, totalCompanies, totalSocieties, totalPortfolios, totalJobs, openJobs, closedJobs, totalApplications, acceptedApps, pendingApps, rejectedApps, recentApps] = await Promise.all([
     prisma.user.count(),
     prisma.user.count({ where: { verified: true } }),

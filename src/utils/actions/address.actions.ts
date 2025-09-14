@@ -16,6 +16,9 @@ export const updateAddressById = async (data: FormData, id?: string) => {
     const zip = data.get("zip") as string;
 
     const findEmployeeById = await findEmployee({ userId: session?.user?.id });
+    if (findEmployeeById && findEmployeeById?._count?.address > 2) {
+      throw new Error("Max address limit reached");
+    }
 
     if (id == null || !id) {
       const create = await createAddress({
@@ -46,15 +49,14 @@ export const updateAddressById = async (data: FormData, id?: string) => {
     revalidatePath("/", "layout");
     return { message: "Berhasil mengupdate alamat!", error: false };
   } catch (error) {
-    console.error("Error updating address:", error);
-    throw new Error("Failed to update address");
+    return { message: (error as Error).message, error: true };
   }
 };
 
 export const deleteAddressById = async (id: string) => {
   try {
     const session = await nextGetServerSession();
-    if (session?.user?.id !== id) return { error: true, message: "Unauthorized" };
+    if (!session?.user?.id) return { error: true, message: "Unauthorized" };
 
     const findAddressById = await findAddress({ id });
     if (!findAddressById) return { error: true, message: "Address not found" };
@@ -66,9 +68,8 @@ export const deleteAddressById = async (id: string) => {
     revalidatePath("/", "layout");
     return { message: "Berhasil dihapus!", error: false };
   } catch (error) {
-    console.error(error);
     return {
-      message: "Gagal menghapus alamat",
+      message: (error as Error).message,
       error: true,
     };
   }

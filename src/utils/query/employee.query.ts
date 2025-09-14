@@ -8,6 +8,7 @@ export const findAllEmployee = async (filter?: Prisma.EmployeeWhereInput) => {
       portfolios: true,
       positionApplied: true,
       user: true,
+      address: true,
       _count: true,
     },
   });
@@ -21,7 +22,12 @@ export const findEmployee = async (filter: Prisma.EmployeeWhereInput) => {
       portfolios: true,
       positionApplied: true,
       user: true,
-      _count: true,
+      address: true,
+      _count: {
+        select: {
+          address: true,
+        },
+      },
     },
   });
   return data;
@@ -48,6 +54,7 @@ export const updateEmployee = async (filter: Prisma.EmployeeWhereUniqueInput, da
       portfolios: true,
       positionApplied: true,
       user: true,
+      address: true,
       _count: true,
     },
   });

@@ -1,20 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Building2, Mail, Phone, Globe, MapPin } from "lucide-react";
+import { EmployeeGetPayload } from "@/types/entity.relations";
 
-type Employee = {
-  Company: {
-    id: string;
-    name: string;
-    address: string;
-    phone: string;
-    email: string;
-    website: string | null;
-    description: string;
-  } | null;
-};
-
-export function CompanyAffiliationSection({ employee }: { employee: Employee }) {
+export function CompanyAffiliationSection({ employee }: { employee: EmployeeGetPayload }) {
   const company = employee.Company;
 
   return (
