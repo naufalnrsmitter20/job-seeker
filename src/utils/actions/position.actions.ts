@@ -3,12 +3,11 @@
 import { nextGetServerSession } from "@/lib/AuthOptions";
 import { createAvailablePosition, deleteAvailablePosition, findAvailablePosition, updateAvailablePosition } from "../query/available.position.query";
 import { revalidatePath } from "next/cache";
-import { applyingStatus, jobStatus } from "@prisma/client";
+import { applyingStatus, jobStatus, userRole } from "@prisma/client";
 import { findHumanResource } from "../query/human.resource.query";
 import { findEmployee, updateEmployee } from "../query/employee.query";
-import { createPositionApplied, findPositionApplied, updatePositionApplied } from "../query/position.applied.query";
+import { createPositionApplied, deletePositionApplied, findPositionApplied, updatePositionApplied } from "../query/position.applied.query";
 import { transporter } from "@/lib/mailer";
-import { findUser } from "../query/user.query";
 
 export const updateAvailablePositionWithId = async (data: FormData, id: string | null) => {
   try {
@@ -158,9 +157,6 @@ export const manageJobApplication = async (applicationId: string, data: FormData
   try {
     const session = await nextGetServerSession();
     if (!session?.user?.id) return { error: true, message: "Unauthorized" };
-    const findHRD = await findHumanResource({ userId: session?.user?.id as string });
-
-    if (!findHRD || session.user.role !== "ADMIN") return { error: true, message: "You are not a Human Resource, cannot manage job application" };
 
     const findApplication = await findPositionApplied({ id: applicationId });
     if (!findApplication) return { error: true, message: "Application not found" };
@@ -217,6 +213,29 @@ export const manageJobApplication = async (applicationId: string, data: FormData
     console.error(error);
     return {
       message: "Gagal mengupdate portofolio",
+      error: true,
+    };
+  }
+};
+
+export const deletePositionAppliedById = async (id: string) => {
+  try {
+    const session = await nextGetServerSession();
+    if (!["ADMIN", "HRD"].includes(session?.user?.role as userRole)) return { error: true, message: "Unauthorized!" };
+
+    const del = await deletePositionApplied(id);
+
+    if (!del) throw new Error("Delete failed");
+
+    revalidatePath("/profile");
+    revalidatePath("/hrd/applications");
+    revalidatePath("/admin/applications");
+    revalidatePath("/", "layout");
+    return { message: "Berhasil dihapus!", error: false };
+  } catch (e) {
+    console.error(e);
+    return {
+      message: "Gagal menghapus Applications",
       error: true,
     };
   }

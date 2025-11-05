@@ -6,7 +6,11 @@ export const findAllPositionApplied = async (filter?: Prisma.PositionAppliedWher
     where: filter,
     include: {
       AvailablePosition: true,
-      Employee: true,
+      Employee: {
+        include: {
+          user: true,
+        },
+      },
     },
   });
   return data;

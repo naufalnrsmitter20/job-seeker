@@ -20,7 +20,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
-import { Bell, Briefcase, Building2, ChevronDown, LayoutDashboard, LogOut, User, Users } from "lucide-react";
+import { Bell, Briefcase, Building2, ChevronDown, LayoutDashboard, LayoutPanelLeft, LogOut, User, Users } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { UserAvatarProfile } from "./user-avatar-profile";
 import { signOut, useSession } from "next-auth/react";
@@ -28,12 +28,14 @@ import { signOut, useSession } from "next-auth/react";
 const adminItems = [
   { title: "Ringkasan", href: "/admin", icon: LayoutDashboard },
   { title: "Jobs", href: "/admin/jobs", icon: Briefcase },
+  { title: "Applications", href: "/admin/applications", icon: LayoutPanelLeft },
   { title: "Companies", href: "/admin/companies", icon: Building2 },
   { title: "Users", href: "/admin/users", icon: Users },
 ];
 const hrdItems = [
   { title: "Ringkasan", href: "/hrd", icon: LayoutDashboard },
   { title: "Jobs", href: "/hrd/jobs", icon: Briefcase },
+  { title: "Applications", href: "/hrd/applications", icon: LayoutPanelLeft },
   { title: "Company Profile", href: "/hrd/company-profile", icon: Building2 },
 ];
 

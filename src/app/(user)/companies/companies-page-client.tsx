@@ -15,7 +15,7 @@ import { Search, MapPin, Building2, Filter, SortAsc, Briefcase, Globe, ChevronLe
 import Link from "next/link";
 import { CompaniesPageClientProps } from "@/types/additional-types";
 
-export function CompaniesPageClient({ companies, totalCompanies, types, locations, currentPage, pageSize, searchParams }: CompaniesPageClientProps) {
+export function CompaniesPageClient({ companies, totalCompanies, types, currentPage, pageSize, searchParams }: CompaniesPageClientProps) {
   const router = useRouter();
   const params = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.q || "");

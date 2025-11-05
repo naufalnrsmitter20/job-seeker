@@ -21,7 +21,13 @@ export const findCompany = async (filter: Prisma.CompanyWhereInput) => {
   const data = await prisma.company.findFirst({
     where: filter,
     include: {
-      availablePositions: true,
+      availablePositions: {
+        include: {
+          _count: {
+            select: { positionApplied: true },
+          },
+        },
+      },
       employees: true,
       humanResource: true,
       _count: true,

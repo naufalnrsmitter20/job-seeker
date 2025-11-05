@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { MapPin, Globe, Mail, Phone, Calendar, Users, Briefcase, TrendingUp, Clock, DollarSign, ArrowLeft, ExternalLink, Share2, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import { MapPin, Globe, Mail, Phone, Calendar, Users, Briefcase, TrendingUp, Clock, DollarSign, ArrowLeft, ExternalLink, Share2, ChevronLeft, ChevronRight } from "lucide-react";
 import { formatDate } from "@/lib/format";
 import { CompanyProfileClientProps } from "@/types/additional-types";
 

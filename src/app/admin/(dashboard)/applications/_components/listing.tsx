@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AvailablePositionPayload } from "@/types/entity.relations";
+import { PositionAppliedGetPayload } from "@/types/entity.relations";
 import { ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table";
 import { useState } from "react";
 import { formatDate } from "@/lib/format";
@@ -13,10 +13,9 @@ import { Button } from "@/components/ui/button";
 import { DateRange } from "react-day-picker";
 import { ChevronDown, Settings2 } from "lucide-react";
 import { columns } from "./tables/columns";
-import { useRouter } from "next/navigation";
 
 interface DataTableProps {
-  data: AvailablePositionPayload[];
+  data: PositionAppliedGetPayload[];
 }
 
 export default function DataTableListingPage({ data }: DataTableProps) {
@@ -53,27 +52,15 @@ export default function DataTableListingPage({ data }: DataTableProps) {
     const dataToExport = selectedRows.length > 0 ? selectedRows.map((row) => row.original) : table.getFilteredRowModel().rows.map((row) => row.original);
 
     const csvContent = [
-      ["Position Name", "Capacity", "Description", "Status", "Submission Start Date", "Submission End Date", "Salary Start Range", " Salary End Range", "Position Applied"].join(","),
-      ...dataToExport.map((position) =>
-        [
-          position.positionName || "",
-          position.capacity || "",
-          position.description || "",
-          position.status || "",
-          formatDate(position.submissionStartDate) || "",
-          formatDate(position.submissionEndDate) || "",
-          position.salaryStartRange || "",
-          position.salaryEndRange || "",
-          position.positionApplied.length || "",
-        ].join(",")
-      ),
+      ["Position Name", "Applicant Name", "Applicant Email", "Applying Status", "Apply Date"].join(","),
+      ...dataToExport.map((position) => [position.AvailablePosition?.positionName || "", position.Employee?.name || "", position.Employee?.user?.email || "", position.applyingStatus || "", formatDate(position.applyDate) || ""].join(",")),
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `positions-${new Date().toISOString().split("T")[0]}.csv`;
+    a.download = `applications-${new Date().toISOString().split("T")[0]}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
   };
@@ -83,7 +70,7 @@ export default function DataTableListingPage({ data }: DataTableProps) {
       {/* Toolbar */}
       <Card>
         <CardHeader className="flex justify-between items-center">
-          <CardTitle className="text-lg">Position Data | Filters & Search</CardTitle>
+          <CardTitle className="text-lg">Applications Data | Filters & Search</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Global Search */}
@@ -95,9 +82,9 @@ export default function DataTableListingPage({ data }: DataTableProps) {
           <div className="flex flex-wrap items-center gap-4">
             {/* Role Filter */}
             <Select
-              value={(table.getColumn("status")?.getFilterValue() as string[])?.join(",") || ""}
+              value={(table.getColumn("applyingStatus")?.getFilterValue() as string[])?.join(",") || ""}
               onValueChange={(value) => {
-                const column = table.getColumn("status");
+                const column = table.getColumn("applyingStatus");
                 if (value === "all") {
                   column?.setFilterValue(undefined);
                 } else {
@@ -110,16 +97,42 @@ export default function DataTableListingPage({ data }: DataTableProps) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="OPEN">OPEN</SelectItem>
-                <SelectItem value="CLOSED">CLOSED</SelectItem>
+                <SelectItem value="PENDING">PENDING</SelectItem>
+                <SelectItem value="ACCEPTED">ACCEPTED</SelectItem>
+                <SelectItem value="REJECTED">REJECTED</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Position Name Filter */}
+            <Select
+              value={(table.getColumn("positionName")?.getFilterValue() as string[])?.join(",") || ""}
+              onValueChange={(value) => {
+                const column = table.getColumn("positionName");
+                if (value === "all") {
+                  column?.setFilterValue(undefined);
+                } else {
+                  column?.setFilterValue(value.split(","));
+                }
+              }}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filter by position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Status</SelectItem>
+                {Array.from(new Set(data.map((item) => item.AvailablePosition?.positionName).filter(Boolean))).map((positionName) => (
+                  <SelectItem key={positionName} value={positionName!}>
+                    {positionName}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
             {/* Date Range Filter */}
             <DatePickerWithRange
-              date={table.getColumn("createdAt")?.getFilterValue() as DateRange}
+              date={table.getColumn("applyDate")?.getFilterValue() as DateRange}
               onDateChange={(date) => {
-                table.getColumn("createdAt")?.setFilterValue(date);
+                table.getColumn("applyDate")?.setFilterValue(date);
               }}
             />
 

@@ -30,7 +30,6 @@ export interface CompaniesPageClientProps {
   companies: CompanyGetPayload[];
   totalCompanies: number;
   types: string[];
-  locations: string[];
   currentPage: number;
   pageSize: number;
   searchParams: {

@@ -20,7 +20,11 @@ export type EmployeeGetPayload = Prisma.EmployeeGetPayload<{
 
 export type HumanResourceGetPayload = Prisma.HumanResourceGetPayload<{
   include: {
-    Company: true;
+    Company: {
+      include: {
+        availablePositions: true;
+      };
+    };
     user: true;
   };
 }>;
@@ -83,7 +87,11 @@ export type AvailablePositionWithPositionApplied = Prisma.AvailablePositionGetPa
 export type PositionAppliedGetPayload = Prisma.PositionAppliedGetPayload<{
   include: {
     AvailablePosition: true;
-    Employee: true;
+    Employee: {
+      include: {
+        user: true;
+      };
+    };
   };
 }>;
 

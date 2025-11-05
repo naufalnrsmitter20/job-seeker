@@ -389,7 +389,7 @@ export default function PositionForm({ initialData, pageTitle }: { initialData?:
               </div>
             </div>
             <div className="flex justify-start gap-4">
-              <Button type="button" onClick={() => router.push("/admin/manageUsers")}>
+              <Button type="button" onClick={() => router.push("/hrd/jobs")}>
                 Back
               </Button>
               {loading ? (

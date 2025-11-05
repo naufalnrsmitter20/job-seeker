@@ -1,26 +1,23 @@
 import { notFound } from "next/navigation";
 import Form from "./form";
-import { UserGetPayload } from "@/types/entity.relations";
-import { findUser } from "@/utils/query/user.query";
+import { AvailablePositionPayload } from "@/types/entity.relations";
+import { findAvailablePosition } from "@/utils/query/available.position.query";
 
-type TUserViewPageProps = {
+type TPositionViewPageProps = {
   id: string;
 };
 
-export default async function UserViewPage({ id }: TUserViewPageProps) {
-  let user = null;
-  let pageTitle = "Create New User";
+export default async function PositionViewPage({ id }: TPositionViewPageProps) {
+  let position = null;
+  const pageTitle = "Edit Position";
 
-  if (id !== "new") {
-    const data = await findUser({
-      id: id,
-    });
-    user = data as UserGetPayload;
-    if (!user) {
-      notFound();
-    }
-    pageTitle = `Edit User`;
+  const data = await findAvailablePosition({
+    id: id,
+  });
+  position = data as AvailablePositionPayload;
+  if (!position) {
+    notFound();
   }
 
-  return <Form initialData={user} pageTitle={pageTitle} />;
+  return <Form initialData={position} pageTitle={pageTitle} />;
 }

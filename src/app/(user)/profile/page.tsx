@@ -91,7 +91,7 @@ export default async function ProfilePage() {
         </TabsContent>
 
         <TabsContent value="portfolio" className="space-y-6">
-          <PortfolioSection portfolios={employee.portfolios} employeeId={employee.id} />
+          <PortfolioSection portfolios={employee.portfolios} />
         </TabsContent>
 
         <TabsContent value="applications" className="space-y-6">

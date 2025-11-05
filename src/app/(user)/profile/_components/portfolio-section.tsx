@@ -16,7 +16,7 @@ import { Portfolio } from "@prisma/client";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
-export function PortfolioSection({ portfolios, employeeId }: { portfolios: Portfolio[]; employeeId: string }) {
+export function PortfolioSection({ portfolios }: { portfolios: Portfolio[] }) {
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);

@@ -29,7 +29,7 @@ export default async function DashboardPage() {
     prisma.positionApplied.findMany({
       where: { AvailablePosition: { companyId: findHRD?.Company?.id } },
       orderBy: { applyDate: "desc" },
-      take: 10,
+      take: 5,
       include: {
         Employee: { select: { name: true } },
         AvailablePosition: { select: { positionName: true, Company: { select: { name: true } } } },
@@ -39,7 +39,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2">
         <KpiCard title="Jobs" value={totalJobs} icon={<Briefcase className="h-4 w-4 text-blue-600" />} subtle={`Open: ${openJobs} • Closed: ${closedJobs}`} />
         <KpiCard title="Applications" value={totalApplications} icon={<FileText className="h-4 w-4 text-blue-600" />} subtle={`P:${pendingApps} A:${acceptedApps} R:${rejectedApps}`} />
       </div>
@@ -48,7 +48,7 @@ export default async function DashboardPage() {
         <Card className="md:col-span-4">
           <CardHeader>
             <CardTitle className="text-blue-900">Aplikasi Terbaru {currentCompany?.name}</CardTitle>
-            <CardDescription>10 aplikasi terakhir dari kandidat.</CardDescription>
+            <CardDescription>5 aplikasi terakhir dari kandidat.</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>

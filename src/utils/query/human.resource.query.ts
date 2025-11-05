@@ -6,7 +6,11 @@ export const findAllHumanResource = async (filter?: Prisma.HumanResourceWhereInp
     where: filter,
     include: {
       user: true,
-      Company: true,
+      Company: {
+        include: {
+          availablePositions: true,
+        },
+      },
     },
   });
   return data;

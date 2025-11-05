@@ -74,7 +74,7 @@ const columns: ColumnDef<Application>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => (
+    cell: () => (
       <Button variant="outline" size="sm" className="border-blue-200 text-blue-600 bg-transparent">
         <ExternalLink className="h-4 w-4 mr-2" />
         View Details

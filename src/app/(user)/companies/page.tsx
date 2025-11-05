@@ -50,7 +50,7 @@ export default async function CompaniesPage({
       break;
   }
 
-  const [companies, totalCompanies, industryTypes, locations] = await Promise.all([
+  const [companies, totalCompanies, industryTypes] = await Promise.all([
     prisma.company.findMany({
       where,
       include: {
@@ -88,7 +88,6 @@ export default async function CompaniesPage({
 
   // Get unique types and locations for filters
   const types = industryTypes.map((c) => c.type).filter(Boolean) as string[];
-  const locationsList = locations.map((c) => c.address).filter(Boolean);
 
-  return <CompaniesPageClient companies={companies} totalCompanies={totalCompanies} types={types} locations={locationsList} currentPage={page} pageSize={pageSize} searchParams={params} />;
+  return <CompaniesPageClient companies={companies} totalCompanies={totalCompanies} types={types} currentPage={page} pageSize={pageSize} searchParams={params} />;
 }
