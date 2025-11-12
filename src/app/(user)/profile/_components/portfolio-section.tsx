@@ -101,8 +101,8 @@ export function PortfolioSection({ portfolios }: { portfolios: Portfolio[] }) {
                 </DialogHeader>
                 <form onSubmit={handleCreateAction} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="skill">Skill/Technology</Label>
-                    <Input id="skill" name="skill" placeholder="e.g., React, Python, UI/UX Design" required />
+                    <Label htmlFor="title">Title</Label>
+                    <Input id="title" name="title" placeholder="ex. Project Alpha" required />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="description">Description</Label>
@@ -137,8 +137,8 @@ export function PortfolioSection({ portfolios }: { portfolios: Portfolio[] }) {
                 {editingId === portfolio.id ? (
                   <form action={updateAction} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor={`skill-${portfolio.id}`}>Skill/Technology</Label>
-                      <Input id={`skill-${portfolio.id}`} name="skill" defaultValue={portfolio.skill} required />
+                      <Label htmlFor={`title-${portfolio.id}`}>Title</Label>
+                      <Input id={`title-${portfolio.id}`} name="title" defaultValue={portfolio.title} required />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor={`description-${portfolio.id}`}>Description</Label>
@@ -146,7 +146,7 @@ export function PortfolioSection({ portfolios }: { portfolios: Portfolio[] }) {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor={`link-${portfolio.id}`}>Portfolio Link</Label>
-                      <Input id={`link-${portfolio.id}`} name="link" />
+                      <Input id={`link-${portfolio.id}`} name="link" defaultValue={portfolio.link as string} />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor={`file-${portfolio.id}`}>Portfolio File</Label>
@@ -167,7 +167,7 @@ export function PortfolioSection({ portfolios }: { portfolios: Portfolio[] }) {
                       <div className="space-y-2">
                         <div className="flex items-center gap-2">
                           <FileText className="h-5 w-5 text-blue-600" />
-                          <h3 className="text-lg font-semibold text-blue-900">{portfolio.skill}</h3>
+                          <h3 className="text-lg font-semibold text-blue-900">{portfolio.title}</h3>
                         </div>
                         <p className="text-gray-700 leading-relaxed">{portfolio.description}</p>
                         <div className="flex items-center gap-4">

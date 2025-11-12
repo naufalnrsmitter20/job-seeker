@@ -85,5 +85,17 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
     daysRemaining: Math.max(0, Math.ceil((new Date(job.submissionEndDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))),
   };
 
-  return <JobDetailClient userData={findUserById} job={job!} similarJobs={similarJobs} stats={jobStats} />;
+  const getPositionAppliedEmployee = await prisma.positionApplied.findFirst({
+    where: { employeeId: findUserById?.Employee?.id, availablePositionId: job.id },
+    include: {
+      AvailablePosition: true,
+      Employee: {
+        include: {
+          user: true,
+        },
+      },
+    },
+  });
+
+  return <JobDetailClient positionApplied={getPositionAppliedEmployee!} userData={findUserById} job={job!} similarJobs={similarJobs} stats={jobStats} />;
 }

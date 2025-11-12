@@ -1,4 +1,4 @@
-import { AvailablePositionPayload, AvailablePositionWithPositionApplied, CompanyGetPayload, UserGetPayload } from "@/types/entity.relations";
+import { AvailablePositionPayload, AvailablePositionWithPositionApplied, CompanyGetPayload, PositionAppliedGetPayload, UserGetPayload } from "@/types/entity.relations";
 
 export type CompanyStats = {
   totalJobs: number;
@@ -44,7 +44,7 @@ export interface CompaniesPageClientProps {
 export interface JobsPageClientProps {
   jobs: AvailablePositionPayload[];
   totalJobs: number;
-  locations: string[];
+  // locations: string[];
   currentPage: number;
   pageSize: number;
   searchParams: {
@@ -83,4 +83,5 @@ export interface JobDetailClientProps {
     recentApplications: AvailablePositionWithPositionApplied["positionApplied"];
     daysRemaining: number;
   };
+  positionApplied?: PositionAppliedGetPayload;
 }

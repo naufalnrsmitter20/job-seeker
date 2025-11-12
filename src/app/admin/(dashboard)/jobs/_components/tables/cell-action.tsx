@@ -5,6 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { AvailablePositionPayload } from "@/types/entity.relations";
 import { deletePositionById } from "@/utils/actions/position.actions";
 import { IconEdit, IconDotsVertical, IconTrash } from "@tabler/icons-react";
+import { Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -49,8 +50,8 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem onClick={() => router.push(`/admin/jobs/${data.id}`)}>
-            <IconEdit className="mr-2 h-4 w-4" /> Update
+          <DropdownMenuItem onClick={() => router.push(`/jobs/${data.id}`)}>
+            <Eye className="mr-2 h-4 w-4" /> View
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <IconTrash className="mr-2 h-4 w-4" /> Delete

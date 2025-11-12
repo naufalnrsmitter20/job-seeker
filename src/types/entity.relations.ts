@@ -6,6 +6,16 @@ export type UserGetPayload = Prisma.UserGetPayload<{
     HumanResource: true;
   };
 }>;
+export type UserAppliedPositionGetPayload = Prisma.UserGetPayload<{
+  include: {
+    Employee: {
+      include: {
+        positionApplied: true;
+      };
+    };
+    HumanResource: true;
+  };
+}>;
 
 export type EmployeeGetPayload = Prisma.EmployeeGetPayload<{
   include: {
@@ -13,7 +23,15 @@ export type EmployeeGetPayload = Prisma.EmployeeGetPayload<{
     Company: true;
     address: true;
     portfolios: true;
-    positionApplied: true;
+    positionApplied: {
+      include: {
+        AvailablePosition: {
+          include: {
+            Company: true;
+          };
+        };
+      };
+    };
     _count: true;
   };
 }>;
@@ -103,6 +121,7 @@ export type AddressGetPayload = Prisma.AddressGetPayload<{
     state: true;
     country: true;
     zip: true;
+    isPrimary: true;
     createdAt: true;
     updatedAt: true;
   };

@@ -15,7 +15,7 @@ export default function Footer() {
                 </div>
                 <span className="text-xl font-bold">JobSeeker Indonesia</span>
               </div>
-              <p className="text-blue-200">Platform resmi pemerintah Indonesia untuk menghubungkan pencari kerja dengan perusahaan.</p>
+              <p className="text-blue-200">Platform terbaik untuk menghubungkan pencari kerja dengan perusahaan.</p>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Untuk Pencari Kerja</h3>

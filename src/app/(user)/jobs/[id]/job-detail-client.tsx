@@ -19,7 +19,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { applyJobPosition } from "@/utils/actions/position.actions";
 import toast from "react-hot-toast";
 
-export function JobDetailClient({ job, similarJobs, stats, userData }: JobDetailClientProps) {
+export function JobDetailClient({ job, similarJobs, stats, userData, positionApplied }: JobDetailClientProps) {
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -154,9 +154,19 @@ export function JobDetailClient({ job, similarJobs, stats, userData }: JobDetail
             <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:w-48">
               <Dialog open={isApplicationOpen} onOpenChange={setIsApplicationOpen}>
                 <DialogTrigger asChild>
-                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700" disabled={!canApply}>
-                    {!canApply ? (isExpired ? "Application Closed" : "Position Closed") : "Apply Now"}
-                  </Button>
+                  {positionApplied?.applyingStatus === "PENDING" ? (
+                    <Button size="lg" className="bg-gray-400 cursor-not-allowed hover:bg-gray-400" disabled>
+                      Application Pending
+                    </Button>
+                  ) : positionApplied?.applyingStatus === "ACCEPTED" ? (
+                    <Button size="lg" className="bg-green-600 cursor-not-allowed hover:bg-green-600" disabled>
+                      Application Accepted
+                    </Button>
+                  ) : (
+                    <Button size="lg" className="bg-blue-600 hover:bg-blue-700" disabled={!canApply}>
+                      {!canApply ? (isExpired ? "Application Closed" : "Position Closed") : "Apply Now"}
+                    </Button>
+                  )}
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>

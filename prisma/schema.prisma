@@ -102,12 +102,13 @@ model HumanResource {
 }
 
 model Address {
-  id      String @id @default(cuid())
-  street  String
-  city    String
-  state   String
-  country String
-  zip     String
+  id        String  @id @default(cuid())
+  street    String
+  city      String
+  state     String
+  country   String
+  zip       String
+  isPrimary Boolean @default(false)
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
@@ -119,7 +120,7 @@ model Address {
 
 model Portfolio {
   id          String  @id @default(cuid())
-  skill       String
+  title       String
   description String
   file        String?
   link        String?

@@ -77,7 +77,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <IconX className="mr-2 h-4 w-4" /> Reject
           </DropdownMenuItem>
           <Separator className="my-2" />
-          <DropdownMenuItem onClick={() => router.push("/")}>
+          <DropdownMenuItem onClick={() => router.push(`/hrd/applications/view-user/${data.Employee?.userId}`)}>
             <IconEye className="mr-2 h-4 w-4" /> View User
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>

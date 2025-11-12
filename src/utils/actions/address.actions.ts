@@ -4,6 +4,7 @@ import { nextGetServerSession } from "@/lib/AuthOptions";
 import { createAddress, deleteAddress, findAddress, updateAddress } from "../query/address.query";
 import { findEmployee } from "../query/employee.query";
 import { revalidatePath } from "next/cache";
+import prisma from "@/lib/prisma";
 
 export const updateAddressById = async (data: FormData, id?: string) => {
   try {
@@ -15,38 +16,56 @@ export const updateAddressById = async (data: FormData, id?: string) => {
     const street = data.get("street") as string;
     const zip = data.get("zip") as string;
 
+    const isPrimary = data.get("isPrimary") ? true : false;
+
     const findEmployeeById = await findEmployee({ userId: session?.user?.id });
-    if (findEmployeeById && findEmployeeById?._count?.address > 2) {
+    if (!findEmployeeById) throw new Error("Employee not found");
+
+    if (findEmployeeById._count?.address > 2) {
       throw new Error("Max address limit reached");
     }
 
-    if (id == null || !id) {
+    if (isPrimary) {
+      await prisma.address.updateMany({
+        where: { employeeId: findEmployeeById.id },
+        data: { isPrimary: false },
+      });
+    }
+
+    if (!id) {
       const create = await createAddress({
         city,
         country,
         state,
         street,
         zip,
+        isPrimary: findEmployeeById.address.length === 0 ? true : isPrimary,
         createdAt: new Date(),
         updatedAt: new Date(),
-        employeeId: findEmployeeById?.id,
+        employeeId: findEmployeeById.id,
       });
+
       if (!create) throw new Error("Create failed");
     } else {
       const findById = await findAddress({ id });
+      if (!findById) throw new Error("Address not found");
+
       const update = await updateAddress(id, {
-        city: city ?? findById?.city,
-        country: country ?? findById?.country,
-        state: state ?? findById?.state,
-        street: street ?? findById?.street,
-        zip: zip ?? findById?.zip,
+        city: city ?? findById.city,
+        country: country ?? findById.country,
+        state: state ?? findById.state,
+        street: street ?? findById.street,
+        zip: zip ?? findById.zip,
+        isPrimary: isPrimary,
         updatedAt: new Date(),
       });
+
       if (!update) throw new Error("Update failed");
     }
 
     revalidatePath("/profile");
     revalidatePath("/", "layout");
+
     return { message: "Berhasil mengupdate alamat!", error: false };
   } catch (error) {
     return { message: (error as Error).message, error: true };

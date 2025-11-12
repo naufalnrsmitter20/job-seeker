@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { DateRange } from "react-day-picker";
 import { ChevronDown, Settings2 } from "lucide-react";
 import { columns } from "./tables/columns";
-import { useRouter } from "next/navigation";
 
 interface DataTableProps {
   data: AvailablePositionPayload[];

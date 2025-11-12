@@ -8,6 +8,7 @@ import prisma from "@/lib/prisma";
 import EmptyData from "@/components/global/empty-data";
 import { formatDate } from "@/lib/format";
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default async function HomePage() {
   const [featuredJobs, availablePositions, positionApplied, user, company] = await Promise.all([
@@ -36,7 +37,7 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-white to-blue-100 py-20 lg:py-32">
+      <section className="relative bg-gradient-to-br from-blue-50 via-white to-blue-100 py-2">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
@@ -50,21 +51,6 @@ export default async function HomePage() {
                   <span className="text-blue-600"> Impian Anda</span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">Platform terpercaya yang menghubungkan pencari kerja dengan perusahaan terbaik di Indonesia. Mulai karir Anda atau temukan talenta terbaik untuk perusahaan Anda.</p>
-              </div>
-
-              {/* Search Bar */}
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-blue-100">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                    <Input placeholder="Cari posisi, perusahaan, atau kata kunci..." className="pl-10 h-12 border-gray-200 focus:border-blue-500" />
-                  </div>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                    <Input placeholder="Lokasi" className="pl-10 h-12 border-gray-200 focus:border-blue-500 sm:w-48" />
-                  </div>
-                  <Button className="h-12 px-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold">Cari Kerja</Button>
-                </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -82,24 +68,15 @@ export default async function HomePage() {
             </div>
 
             <div className="relative">
-              <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl p-8 text-white">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-2xl font-bold">Dashboard Pencari Kerja</h3>
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                      <Users className="h-6 w-6" />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white/10 rounded-xl p-4">
-                      <div className="text-2xl font-bold">{positionApplied}</div>
-                      <div className="text-sm opacity-90">Lamaran Terkirim</div>
-                    </div>
-                    <div className="bg-white/10 rounded-xl p-4">
-                      <div className="text-2xl font-bold">{availablePositions}</div>
-                      <div className="text-sm opacity-90">Posisi Tersedia</div>
-                    </div>
-                  </div>
+              <div className="grid grid-cols-2 grid-rows-2 gap-4 max-w-full">
+                <div className="row-span-2">
+                  <Image src="/img/placeholder-3.jpg" alt="placeholder 1" width={100} height={100} unoptimized className="w-full h-full object-cover rounded-lg" />
+                </div>
+                <div>
+                  <Image src="/img/placeholder-2.jpg" alt="placeholder 1" width={100} height={100} unoptimized className="w-full h-full object-cover rounded-lg" />
+                </div>
+                <div className="col-start-2 row-start-2">
+                  <Image src="/img/placeholder-1.jpg" alt="placeholder 1" width={100} height={100} unoptimized className="w-full h-full object-cover rounded-lg" />
                 </div>
               </div>
             </div>
@@ -137,7 +114,10 @@ export default async function HomePage() {
                 <Card key={job.id} className="hover:shadow-lg transition-shadow border-0 bg-white">
                   <CardHeader className="pb-4">
                     <div className="flex items-start justify-between">
-                      <Image src={job.Company.logo || "https://res.cloudinary.com/demo/image/upload/v1611234567/sample.jpg"} alt={job.Company.name} width={100} height={100} className="w-24 h-24 object-contain rounded" />
+                      <Avatar className="h-24 w-24 border-4 border-white shadow-lg">
+                        <AvatarImage src={job.Company?.logo || ""} alt={job.Company?.name} />
+                        <AvatarFallback className="bg-blue-600 text-white text-xl font-bold">{job.Company?.name}</AvatarFallback>
+                      </Avatar>
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                         {job.status === "OPEN" ? "Tersedia" : "Ditutup"}
                       </Badge>

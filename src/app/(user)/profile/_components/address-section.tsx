@@ -17,12 +17,14 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [isPrimaryChecked, setIsPrimaryChecked] = useState(false);
 
   const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     const toastId = toast.loading("Updating address...");
     try {
       const formData = new FormData(e.target);
+      formData.append("isPrimary", isPrimaryChecked ? "true" : "false");
       const result = await updateAddressById(formData, editingId as string);
       if (!result.error) {
         setEditingId(null);
@@ -98,6 +100,10 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
                       <Label htmlFor="zip">ZIP Code</Label>
                       <Input id="zip" name="zip" type="number" required />
                     </div>
+                    <div>
+                      <Label htmlFor="isPrimary">Jadikan Utama</Label>
+                      <Input id="isPrimary" name="isPrimarys" onChange={(e) => setIsPrimaryChecked(e.target.checked)} type="checkbox" />
+                    </div>
                   </div>
                   <div className="flex justify-end gap-2">
                     <Button type="button" variant="outline" onClick={() => setIsCreating(false)}>
@@ -113,9 +119,9 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
           </div>
         </CardHeader>
 
-        <div className="grid gap-4 px-4">
+        <div className={`grid gap-4 px-4`}>
           {addresses.map((address) => (
-            <Card key={address.id} className="border-blue-100">
+            <Card key={address.id} className={`border-blue-100 ${address.isPrimary ? "border-blue-600 border-2 ring-4 ring-blue-200" : ""}`}>
               <CardContent className="p-4">
                 {editingId === address.id ? (
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -140,6 +146,10 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
                         <Label htmlFor={`zip-${address.id}`}>ZIP Code</Label>
                         <Input type="number" id={`zip-${address.id}`} name="zip" defaultValue={address.zip} required />
                       </div>
+                      <div className="flex justify-start gap-2 items-center">
+                        <Input className="size-10 m-2" type="checkbox" id={`isPrimary-${address.id}`} name="isPrimarys" onChange={(e) => setIsPrimaryChecked(e.target.checked)} defaultChecked={address.isPrimary} />
+                        <Label htmlFor={`isPrimary-${address.id}`}>Jadikan Utama</Label>
+                      </div>
                     </div>
                     <div className="flex justify-end gap-2">
                       <Button type="button" variant="outline" onClick={() => setEditingId(null)}>
@@ -151,7 +161,7 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
                     </div>
                   </form>
                 ) : (
-                  <div className="flex items-start justify-between">
+                  <div className={`flex relative items-start justify-between`}>
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-blue-600" />
@@ -162,23 +172,26 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
                       </div>
                       <Badge variant="outline">{address.country}</Badge>
                     </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" onClick={() => setEditingId(address.id)} className="border-blue-200 text-blue-600 bg-transparent">
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          const confirmation = confirm("Are you sure you want to delete this address?");
-                          if (confirmation) {
-                            handleDeleteAddress(address.id);
-                          }
-                        }}
-                        variant="outline"
-                        size="sm"
-                        className="border-red-200 text-red-600 bg-transparent"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                    <div className="flex flex-col justify-center gap-4">
+                      {address.isPrimary && <Badge className="mt-2 mr-2 bg-blue-100 text-blue-700">Alamat Utama</Badge>}
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm" onClick={() => setEditingId(address.id)} className="border-blue-200 text-blue-600 bg-transparent">
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            const confirmation = confirm("Are you sure you want to delete this address?");
+                            if (confirmation) {
+                              handleDeleteAddress(address.id);
+                            }
+                          }}
+                          variant="outline"
+                          size="sm"
+                          className="border-red-200 text-red-600 bg-transparent"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 )}

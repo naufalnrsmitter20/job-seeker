@@ -67,7 +67,7 @@ export default async function JobsPage({
       break;
   }
 
-  const [jobs, totalJobs, companies] = await Promise.all([
+  const [jobs, totalJobs] = await Promise.all([
     prisma.availablePosition.findMany({
       where,
       include: {
@@ -82,13 +82,11 @@ export default async function JobsPage({
       take: pageSize,
     }),
     prisma.availablePosition.count({ where }),
-    prisma.company.findMany({
-      select: { address: true },
-      distinct: ["address"],
-    }),
+    // prisma.company.findMany({
+    //   select: { address: true },
+    //   distinct: ["address"],
+    // }),
   ]);
 
-  const locations = companies.map((c) => c.address).filter(Boolean);
-
-  return <JobsPageClient jobs={jobs} totalJobs={totalJobs} locations={locations} currentPage={page} pageSize={pageSize} searchParams={params} />;
+  return <JobsPageClient jobs={jobs} totalJobs={totalJobs} currentPage={page} pageSize={pageSize} searchParams={params} />;
 }

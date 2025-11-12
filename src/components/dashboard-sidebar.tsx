@@ -115,16 +115,6 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
 
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={() => router.push("/dashboard/profile")}>
-                      <User className="mr-2 h-4 w-4" />
-                      Profile
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Bell className="mr-2 h-4 w-4" />
-                      Notifications
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="hover:bg-red-500 hover:text-white">
                     <LogOut className="mr-2 h-4 w-4 group-hover:text-white" />

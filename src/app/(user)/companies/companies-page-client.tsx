@@ -224,12 +224,12 @@ export function CompaniesPageClient({ companies, totalCompanies, types, currentP
                               <Button variant="outline" size="sm" asChild className="border-blue-200 text-blue-600 bg-transparent">
                                 <Link href={company.website.startsWith("http") ? company.website : `https://${company.website}`} target="_blank" rel="noopener noreferrer">
                                   <ExternalLink className="h-3 w-3 mr-1" />
-                                  Visit
+                                  Kunjungi
                                 </Link>
                               </Button>
                             )}
                             <Button onClick={() => router.push(`/companies/${company.id}`)} size="sm" className="bg-blue-600 hover:bg-blue-700" disabled={company.availablePositions.length === 0}>
-                              View Jobs
+                              Lihat Industri
                             </Button>
                           </div>
                         </div>

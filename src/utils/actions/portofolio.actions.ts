@@ -11,7 +11,7 @@ export const updatePortofolioById = async (formData: FormData, id?: string) => {
   try {
     const session = await nextGetServerSession();
     if (!session?.user?.id) return { error: true, message: "Unauthorized" };
-    const skill = formData.get("skill") as string;
+    const title = formData.get("title") as string;
     const file = formData.get("file") as File;
     const link = formData.get("link") as string;
     const description = formData.get("description") as string;
@@ -28,7 +28,7 @@ export const updatePortofolioById = async (formData: FormData, id?: string) => {
 
     if (id == null) {
       const create = await createPortfolio({
-        skill,
+        title,
         file: upload.data?.downloadUrl || upload.data?.url || "",
         link,
         description,
@@ -40,8 +40,8 @@ export const updatePortofolioById = async (formData: FormData, id?: string) => {
     } else {
       const findPorto = await findPortfolio({ id });
       const update = await updatePortfolio(id, {
-        skill: skill ?? findPorto?.skill,
-        file: upload.data?.downloadUrl || upload.data?.url || "",
+        title: title ?? findPorto?.title,
+        file: upload.data?.downloadUrl || upload.data?.url || findPorto?.file,
         link: link ?? findPorto?.link,
         description: description ?? findPorto?.description,
         updatedAt: new Date(),

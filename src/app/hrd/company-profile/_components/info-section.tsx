@@ -98,7 +98,7 @@ export default function InfoSection({ data }: { data: HumanResourceGetPayload })
             </DialogContent>
           </Dialog>
         </div>
-        <Card>
+        <Card className="w-full">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -141,11 +141,11 @@ export default function InfoSection({ data }: { data: HumanResourceGetPayload })
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="address">Company Address</Label>
-                      <Textarea id="address" name="address" defaultValue={data.Company?.address || ""} />
+                      <Textarea className="w-full" id="address" name="address" defaultValue={data.Company?.address || ""} />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="description">Company Description</Label>
-                      <Textarea id="description" name="description" defaultValue={data.Company?.description || ""} />
+                      <Textarea className="w-full" id="description" name="description" defaultValue={data.Company?.description || ""} />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="type">Company Type</Label>
