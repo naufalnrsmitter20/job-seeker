@@ -224,8 +224,7 @@ export function EmployeeProfileClient({ user, employee }: EmployeeProfileClientP
                         <p className="text-foreground font-medium">{primaryAddress.zip}</p>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-gray-600">Status</label>
-                        <Badge className="mt-1">{primaryAddress.isPrimary ? "Primary" : "Secondary"}</Badge>
+                        <Badge className="mt-1">{primaryAddress.isPrimary ? "Alamat Utama" : ""}</Badge>
                       </div>
                     </div>
                   </CardContent>

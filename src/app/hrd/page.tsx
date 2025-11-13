@@ -1,30 +1,32 @@
-import Image from "next/image";
 import prisma from "@/lib/prisma";
 import { KpiCard } from "@/components/kpi-card";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatDate } from "@/lib/format";
-import { Briefcase, CheckCircle2, Clock, FileText } from "lucide-react";
+import { Briefcase, FileText } from "lucide-react";
 import { nextGetServerSession } from "@/lib/AuthOptions";
 import { findHumanResource } from "@/utils/query/human.resource.query";
-import { findCompany } from "@/utils/query/company.query";
+import { findUser } from "@/utils/query/user.query";
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
   const session = await nextGetServerSession();
-  const findHRD = await findHumanResource({
+  const findUserData = await findUser({
     id: session?.user?.id,
   });
-  const [currentCompany, totalJobs, openJobs, closedJobs, totalApplications, acceptedApps, pendingApps, rejectedApps, recentApps] = await Promise.all([
-    findCompany({ humanResourceId: findHRD?.id }),
-    prisma.availablePosition.count({ where: { companyId: findHRD?.Company?.id } }),
-    prisma.availablePosition.count({ where: { status: "OPEN", companyId: findHRD?.Company?.id } }),
-    prisma.availablePosition.count({ where: { status: "CLOSED", companyId: findHRD?.Company?.id } }),
-    prisma.positionApplied.count({ where: { AvailablePosition: { companyId: findHRD?.Company?.id } } }),
-    prisma.positionApplied.count({ where: { applyingStatus: "ACCEPTED", AvailablePosition: { companyId: findHRD?.Company?.id } } }),
-    prisma.positionApplied.count({ where: { applyingStatus: "PENDING", AvailablePosition: { companyId: findHRD?.Company?.id } } }),
+  const findHRD = await findHumanResource({
+    id: findUserData?.HumanResource?.id,
+  });
+  const currentCompany = findHRD?.Company;
+  const [totalJobs, openJobs, closedJobs, totalApplications, acceptedApps, pendingApps, rejectedApps, recentApps] = await Promise.all([
+    prisma.availablePosition.count({ where: { companyId: currentCompany?.id } }),
+    prisma.availablePosition.count({ where: { status: "OPEN", companyId: currentCompany?.id } }),
+    prisma.availablePosition.count({ where: { status: "CLOSED", companyId: currentCompany?.id } }),
+    prisma.positionApplied.count({ where: { AvailablePosition: { companyId: currentCompany?.id } } }),
+    prisma.positionApplied.count({ where: { applyingStatus: "ACCEPTED", AvailablePosition: { companyId: currentCompany?.id } } }),
+    prisma.positionApplied.count({ where: { applyingStatus: "PENDING", AvailablePosition: { companyId: currentCompany?.id } } }),
     prisma.positionApplied.count({ where: { applyingStatus: "REJECTED", AvailablePosition: { companyId: findHRD?.Company?.id } } }),
     prisma.positionApplied.findMany({
       where: { AvailablePosition: { companyId: findHRD?.Company?.id } },

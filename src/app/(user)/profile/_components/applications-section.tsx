@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { ArrowUpDown, Search, Building2, Calendar, ExternalLink } from "lucide-react";
 import { formatDate } from "@/lib/format";
 import { FileText } from "lucide-react";
+import { redirect } from "next/navigation";
 
 type Application = {
   id: string;
@@ -74,8 +75,8 @@ const columns: ColumnDef<Application>[] = [
   },
   {
     id: "actions",
-    cell: () => (
-      <Button variant="outline" size="sm" className="border-blue-200 text-blue-600 bg-transparent">
+    cell: ({ row }) => (
+      <Button onClick={() => redirect(`/jobs/${row.original.AvailablePosition?.id}`)} variant="outline" size="sm" className="border-blue-200 text-blue-600 bg-transparent">
         <ExternalLink className="h-4 w-4 mr-2" />
         View Details
       </Button>
@@ -151,7 +152,6 @@ export function ApplicationsSection({ applications }: { applications: Applicatio
           </CardContent>
         </Card>
 
-        {/* Applications Table */}
         <Card>
           <CardHeader>
             <CardTitle className="text-blue-900">Histori Pekerjaan</CardTitle>
@@ -189,7 +189,6 @@ export function ApplicationsSection({ applications }: { applications: Applicatio
               </Table>
             </div>
 
-            {/* Pagination */}
             <div className="flex items-center justify-between space-x-2 py-4">
               <div className="text-sm text-muted-foreground">
                 Halaman {table.getState().pagination.pageIndex + 1} dari {table.getPageCount()}
