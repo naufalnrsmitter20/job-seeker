@@ -63,41 +63,41 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-blue-900">
-                Addresses <i>(Max 2)</i>
+                Alamat <i>(Max 2)</i>
               </CardTitle>
-              <CardDescription>Manage your address information</CardDescription>
+              <CardDescription>Kelola informasi alamat Anda</CardDescription>
             </div>
             <Dialog open={isCreating} onOpenChange={setIsCreating}>
               <DialogTrigger asChild>
                 <Button className="bg-blue-600 hover:bg-blue-700">
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Address
+                  Tambah Alamat
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Add New Address</DialogTitle>
+                  <DialogTitle>Tambah Alamat Baru</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="md:col-span-2">
-                      <Label htmlFor="street">Street Address</Label>
+                      <Label htmlFor="street">Alamat Jalan</Label>
                       <Input id="street" name="street" required />
                     </div>
                     <div>
-                      <Label htmlFor="city">City</Label>
+                      <Label htmlFor="city">Kota</Label>
                       <Input id="city" name="city" required />
                     </div>
                     <div>
-                      <Label htmlFor="state">State/Province</Label>
+                      <Label htmlFor="state">Provinsi</Label>
                       <Input id="state" name="state" required />
                     </div>
                     <div>
-                      <Label htmlFor="country">Country</Label>
+                      <Label htmlFor="country">Negara</Label>
                       <Input id="country" name="country" defaultValue="Indonesia" required />
                     </div>
                     <div>
-                      <Label htmlFor="zip">ZIP Code</Label>
+                      <Label htmlFor="zip">Kode POS</Label>
                       <Input id="zip" name="zip" type="number" required />
                     </div>
                     <div>
@@ -107,10 +107,10 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
                   </div>
                   <div className="flex justify-end gap-2">
                     <Button type="button" variant="outline" onClick={() => setIsCreating(false)}>
-                      Cancel
+                      Batal
                     </Button>
                     <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                      Save Address
+                      Simpan Alamat
                     </Button>
                   </div>
                 </form>
@@ -127,23 +127,23 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="md:col-span-2">
-                        <Label htmlFor={`street-${address.id}`}>Street Address</Label>
+                        <Label htmlFor={`street-${address.id}`}>Alamat Jalan</Label>
                         <Input id={`street-${address.id}`} name="street" defaultValue={address.street} required />
                       </div>
                       <div>
-                        <Label htmlFor={`city-${address.id}`}>City</Label>
+                        <Label htmlFor={`city-${address.id}`}>Kota</Label>
                         <Input id={`city-${address.id}`} name="city" defaultValue={address.city} required />
                       </div>
                       <div>
-                        <Label htmlFor={`state-${address.id}`}>State/Province</Label>
+                        <Label htmlFor={`state-${address.id}`}>Provinsi</Label>
                         <Input id={`state-${address.id}`} name="state" defaultValue={address.state} required />
                       </div>
                       <div>
-                        <Label htmlFor={`country-${address.id}`}>Country</Label>
+                        <Label htmlFor={`country-${address.id}`}>Negara</Label>
                         <Input id={`country-${address.id}`} name="country" defaultValue={address.country} required />
                       </div>
                       <div>
-                        <Label htmlFor={`zip-${address.id}`}>ZIP Code</Label>
+                        <Label htmlFor={`zip-${address.id}`}>Kode POS</Label>
                         <Input type="number" id={`zip-${address.id}`} name="zip" defaultValue={address.zip} required />
                       </div>
                       <div className="flex justify-start gap-2 items-center">
@@ -153,10 +153,10 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
                     </div>
                     <div className="flex justify-end gap-2">
                       <Button type="button" variant="outline" onClick={() => setEditingId(null)}>
-                        Cancel
+                        Batal
                       </Button>
                       <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                        Save Changes
+                        Simpan Perubahan
                       </Button>
                     </div>
                   </form>
@@ -203,11 +203,11 @@ export function AddressSection({ addresses }: { addresses: AddressGetPayload[] }
             <Card className="border-dashed border-blue-200">
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <MapPin className="h-12 w-12 text-gray-400 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No addresses added</h3>
-                <p className="text-gray-600 text-center mb-4">Add your address information to complete your profile.</p>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Tidak ada alamat yang ditambahkan</h3>
+                <p className="text-gray-600 text-center mb-4">Tambahkan informasi alamat Anda untuk melengkapi profil Anda.</p>
                 <Button onClick={() => setIsCreating(true)} className="bg-blue-600 hover:bg-blue-700">
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Your First Address
+                  Tambahkan Alamat Pertama Anda
                 </Button>
               </CardContent>
             </Card>

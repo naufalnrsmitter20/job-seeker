@@ -85,43 +85,43 @@ export function PortfolioSection({ portfolios }: { portfolios: Portfolio[] }) {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-blue-900">Portfolio</CardTitle>
-              <CardDescription>Showcase your skills and projects</CardDescription>
+              <CardTitle className="text-blue-900">Portofolio</CardTitle>
+              <CardDescription>Tampilkan keahlian dan proyek Anda</CardDescription>
             </div>
             <Dialog open={isCreating} onOpenChange={setIsCreating}>
               <DialogTrigger asChild>
                 <Button className="bg-blue-600 hover:bg-blue-700">
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Portfolio
+                  Tambah Portofolio
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
-                  <DialogTitle>Add New Portfolio Item</DialogTitle>
+                  <DialogTitle>Tambah Item Portofolio Baru</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleCreateAction} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="title">Title</Label>
+                    <Label htmlFor="title">Judul</Label>
                     <Input id="title" name="title" placeholder="ex. Project Alpha" required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea id="description" name="description" placeholder="Describe your experience, projects, or achievements with this skill..." rows={4} required />
+                    <Label htmlFor="description">Deskripsi</Label>
+                    <Textarea id="description" name="description" placeholder="Jelaskan pengalaman, proyek, atau pencapaian Anda dengan keahlian ini..." rows={4} required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="link">Attach Link</Label>
-                    <Input id="link" name="link" placeholder="paste link to your work" />
+                    <Label htmlFor="link">Lampirkan Tautan</Label>
+                    <Input id="link" name="link" placeholder="tempel tautan ke karya Anda" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="file">Attach File</Label>
-                    <Input id="file" name="file" type="file" placeholder="Upload file to your work" />
+                    <Label htmlFor="file">Lampirkan Berkas</Label>
+                    <Input id="file" name="file" type="file" placeholder="Unggah berkas ke karya Anda" />
                   </div>
                   <div className="flex justify-end gap-2">
                     <Button type="button" variant="outline" onClick={() => setIsCreating(false)}>
-                      Cancel
+                      Batal
                     </Button>
                     <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                      Add Portfolio
+                      Tambah Portofolio
                     </Button>
                   </div>
                 </form>
@@ -137,27 +137,27 @@ export function PortfolioSection({ portfolios }: { portfolios: Portfolio[] }) {
                 {editingId === portfolio.id ? (
                   <form action={updateAction} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor={`title-${portfolio.id}`}>Title</Label>
+                      <Label htmlFor={`title-${portfolio.id}`}>Judul</Label>
                       <Input id={`title-${portfolio.id}`} name="title" defaultValue={portfolio.title} required />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor={`description-${portfolio.id}`}>Description</Label>
+                      <Label htmlFor={`description-${portfolio.id}`}>Deskripsi</Label>
                       <Textarea id={`description-${portfolio.id}`} name="description" defaultValue={portfolio.description} rows={4} required />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor={`link-${portfolio.id}`}>Portfolio Link</Label>
+                      <Label htmlFor={`link-${portfolio.id}`}>Tautan Portofolio</Label>
                       <Input id={`link-${portfolio.id}`} name="link" defaultValue={portfolio.link as string} />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor={`file-${portfolio.id}`}>Portfolio File</Label>
+                      <Label htmlFor={`file-${portfolio.id}`}>Berkas Portofolio</Label>
                       <Input id={`file-${portfolio.id}`} type="file" name="file" />
                     </div>
                     <div className="flex justify-end gap-2">
                       <Button type="button" variant="outline" onClick={() => setEditingId(null)}>
-                        Cancel
+                        Batal
                       </Button>
                       <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                        Save Changes
+                        Simpan Perubahan
                       </Button>
                     </div>
                   </form>
@@ -172,18 +172,18 @@ export function PortfolioSection({ portfolios }: { portfolios: Portfolio[] }) {
                         <p className="text-gray-700 leading-relaxed">{portfolio.description}</p>
                         <div className="flex items-center gap-4">
                           <Badge variant="outline" className="text-xs">
-                            Added {formatDate(portfolio.createdAt)}
+                            Ditambahkan {formatDate(portfolio.createdAt)}
                           </Badge>
                           <Button variant="link" size="sm" className="text-blue-600 hover:text-blue-700 p-0 h-auto" asChild>
                             <Link href={portfolio.link as string} target="_blank" rel="noopener noreferrer">
                               <ExternalLink className="h-4 w-4 mr-1" />
-                              View Project
+                              Lihat Proyek
                             </Link>
                           </Button>
                           <Button variant="link" size="sm" className="text-blue-600 hover:text-blue-700 p-0 h-auto" asChild>
                             <a href={portfolio.file?.replace("/upload/", "/upload/fl_attachment/")} download target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 p-0 h-auto">
                               <Download className="h-4 w-4 mr-1" />
-                              Download File
+                              Unduh Berkas
                             </a>
                           </Button>
                         </div>
@@ -217,11 +217,11 @@ export function PortfolioSection({ portfolios }: { portfolios: Portfolio[] }) {
             <Card className="border-dashed border-blue-200">
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <FileText className="h-12 w-12 text-gray-400 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No portfolio items</h3>
-                <p className="text-gray-600 text-center mb-4">Add your skills, projects, and achievements to showcase your expertise to potential employers.</p>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">tidak ada portofolio</h3>
+                <p className="text-gray-600 text-center mb-4">Tambahkan keterampilan, proyek, dan pencapaian Anda untuk menunjukkan keahlian Anda kepada calon pemberi kerja.</p>
                 <Button onClick={() => setIsCreating(true)} className="bg-blue-600 hover:bg-blue-700">
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Your First Portfolio
+                  Tambahkan Portofolio Pertama Anda
                 </Button>
               </CardContent>
             </Card>

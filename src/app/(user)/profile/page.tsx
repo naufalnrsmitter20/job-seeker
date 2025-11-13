@@ -62,23 +62,23 @@ export default async function ProfilePage() {
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="personal" className="flex items-center gap-2">
             <User className="h-4 w-4" />
-            Personal
+            Data Diri
           </TabsTrigger>
           <TabsTrigger value="address" className="flex items-center gap-2">
             <MapPin className="h-4 w-4" />
-            Address
+            Alamat
           </TabsTrigger>
           <TabsTrigger value="portfolio" className="flex items-center gap-2">
             <Briefcase className="h-4 w-4" />
-            Portfolio
+            Portofolio
           </TabsTrigger>
           <TabsTrigger value="applications" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
-            Applications
+            Pekerjaan
           </TabsTrigger>
           <TabsTrigger value="company" className="flex items-center gap-2">
             <Building2 className="h-4 w-4" />
-            Company
+            Perusahaan
           </TabsTrigger>
         </TabsList>
 

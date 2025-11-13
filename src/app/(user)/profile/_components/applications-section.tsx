@@ -111,8 +111,8 @@ export function ApplicationsSection({ applications }: { applications: Applicatio
       <div className="space-y-4">
         <CardHeader>
           <div>
-            <CardTitle className="text-blue-900">Job Applications</CardTitle>
-            <CardDescription>Track your job application history and status</CardDescription>
+            <CardTitle className="text-blue-900">Riwayat Aplikasi Pekerjaan</CardTitle>
+            <CardDescription>Lacak riwayat dan status lamaran pekerjaan Anda</CardDescription>
           </div>
         </CardHeader>
 
@@ -154,8 +154,8 @@ export function ApplicationsSection({ applications }: { applications: Applicatio
         {/* Applications Table */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-blue-900">Application History</CardTitle>
-            <CardDescription>{table.getFilteredRowModel().rows.length} application(s) found</CardDescription>
+            <CardTitle className="text-blue-900">Histori Pekerjaan</CardTitle>
+            <CardDescription>{table.getFilteredRowModel().rows.length} aplikasi ditemukan</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="rounded-md border">
@@ -181,7 +181,7 @@ export function ApplicationsSection({ applications }: { applications: Applicatio
                   ) : (
                     <TableRow>
                       <TableCell colSpan={columns.length} className="h-24 text-center">
-                        No applications found.
+                        Tidak ada aplikasi ditemukan.
                       </TableCell>
                     </TableRow>
                   )}
@@ -192,14 +192,14 @@ export function ApplicationsSection({ applications }: { applications: Applicatio
             {/* Pagination */}
             <div className="flex items-center justify-between space-x-2 py-4">
               <div className="text-sm text-muted-foreground">
-                Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+                Halaman {table.getState().pagination.pageIndex + 1} dari {table.getPageCount()}
               </div>
               <div className="flex items-center space-x-2">
                 <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()} className="bg-transparent">
-                  Previous
+                  Sebelumnya
                 </Button>
                 <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()} className="bg-transparent">
-                  Next
+                  Berikutnya
                 </Button>
               </div>
             </div>
@@ -210,11 +210,11 @@ export function ApplicationsSection({ applications }: { applications: Applicatio
           <Card className="border-dashed border-blue-200">
             <CardContent className="flex flex-col items-center justify-center py-12">
               <FileText className="h-12 w-12 text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No applications yet</h3>
-              <p className="text-gray-600 text-center mb-4">Start applying for jobs to see your application history here.</p>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Belum ada aplikasi</h3>
+              <p className="text-gray-600 text-center mb-4">Mulai melamar pekerjaan untuk melihat riwayat aplikasi Anda di sini.</p>
               <Button className="bg-blue-600 hover:bg-blue-700">
                 <Search className="h-4 w-4 mr-2" />
-                Browse Jobs
+                Telusuri Pekerjaan
               </Button>
             </CardContent>
           </Card>

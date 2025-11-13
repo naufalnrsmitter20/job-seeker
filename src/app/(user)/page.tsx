@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, Clock, Users, Building2, TrendingUp, Shield, Award } from "lucide-react";
+import { MapPin, Clock, Users, Building2, TrendingUp, Shield, Award } from "lucide-react";
 import prisma from "@/lib/prisma";
 import EmptyData from "@/components/global/empty-data";
 import { formatDate } from "@/lib/format";
@@ -44,7 +43,7 @@ export default async function HomePage() {
               <div className="space-y-4">
                 <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">
                   <Shield className="h-3 w-3 mr-1" />
-                  Platform Resmi Pemerintah Indonesia
+                  Platform Resmi Indonesia
                 </Badge>
                 <h1 className="text-4xl lg:text-6xl font-bold text-blue-900 leading-tight">
                   Temukan Pekerjaan

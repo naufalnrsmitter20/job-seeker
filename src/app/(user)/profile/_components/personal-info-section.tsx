@@ -95,8 +95,8 @@ export function PersonalInfoSection({ user, employee }: { user: User; employee: 
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-blue-900">Personal Information</CardTitle>
-            <CardDescription>Your basic personal details</CardDescription>
+            <CardTitle className="text-blue-900">Informasi Pribadi</CardTitle>
+            <CardDescription>Detail pribadi dasar Anda</CardDescription>
           </div>
           <Button variant="outline" onClick={() => setIsEditing(true)} className="border-blue-200 text-blue-600 bg-transparent">
             <Pencil className="h-4 w-4 mr-2" />
@@ -108,7 +108,7 @@ export function PersonalInfoSection({ user, employee }: { user: User; employee: 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div>
-              <Label className="text-sm font-medium text-gray-500">Full Name</Label>
+              <Label className="text-sm font-medium text-gray-500">Nama Lengkap</Label>
               <div className="text-lg font-medium text-gray-900">{employee.name}</div>
             </div>
             <div>
@@ -118,18 +118,18 @@ export function PersonalInfoSection({ user, employee }: { user: User; employee: 
           </div>
           <div className="space-y-4">
             <div>
-              <Label className="text-sm font-medium text-gray-500">Phone Number</Label>
-              <div className="text-lg text-gray-900">{employee.phone || "Not provided"}</div>
+              <Label className="text-sm font-medium text-gray-500">Nomor Telepon</Label>
+              <div className="text-lg text-gray-900">{employee.phone || "Tidak disediakan"}</div>
             </div>
             <div>
-              <Label className="text-sm font-medium text-gray-500">Date of Birth</Label>
-              <div className="text-lg text-gray-900">{employee.date_of_birth ? formatDate(employee.date_of_birth) : "Not provided"}</div>
+              <Label className="text-sm font-medium text-gray-500">Tanggal Lahir</Label>
+              <div className="text-lg text-gray-900">{employee.date_of_birth ? formatDate(employee.date_of_birth) : "Tidak disediakan"}</div>
             </div>
           </div>
           <div className="space-y-4">
             <div>
-              <Label className="text-sm font-medium text-gray-500">Gender</Label>
-              <div className="text-lg text-gray-900">{employee.gender || "Not specified"}</div>
+              <Label className="text-sm font-medium text-gray-500">Jenis Kelamin</Label>
+              <div className="text-lg text-gray-900">{employee.gender || "Tidak tersedia"}</div>
             </div>
           </div>
         </div>

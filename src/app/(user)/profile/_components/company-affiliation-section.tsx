@@ -11,8 +11,8 @@ export function CompanyAffiliationSection({ employee }: { employee: EmployeeGetP
       <div className="space-y-4">
         <CardHeader>
           <div>
-            <CardTitle className="text-blue-900">Company Affiliation</CardTitle>
-            <CardDescription>Your current company information</CardDescription>
+            <CardTitle className="text-blue-900">Perusahaan Terafiliasi</CardTitle>
+            <CardDescription>Informasi perusahaan Anda saat ini</CardDescription>
           </div>
         </CardHeader>
 
@@ -25,7 +25,7 @@ export function CompanyAffiliationSection({ employee }: { employee: EmployeeGetP
                     <Building2 className="h-5 w-5" />
                     {company.name}
                   </CardTitle>
-                  <Badge className="bg-green-100 text-green-700">Current Employee</Badge>
+                  <Badge className="bg-green-100 text-green-700">Karyawan saat ini</Badge>
                 </div>
               </div>
             </CardHeader>
@@ -57,7 +57,7 @@ export function CompanyAffiliationSection({ employee }: { employee: EmployeeGetP
                 </div>
               </div>
               <div className="pt-4 border-t border-gray-100">
-                <h4 className="font-medium text-gray-900 mb-2">About Company</h4>
+                <h4 className="font-medium text-gray-900 mb-2">Tentang Perusahaan</h4>
                 <p className="text-gray-700 leading-relaxed">{company.description}</p>
               </div>
             </CardContent>
@@ -66,8 +66,8 @@ export function CompanyAffiliationSection({ employee }: { employee: EmployeeGetP
           <Card className="border-dashed border-blue-200">
             <CardContent className="flex flex-col items-center justify-center py-12">
               <Building2 className="h-12 w-12 text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No company affiliation</h3>
-              <p className="text-gray-600 text-center">You are not currently affiliated with any company. This will be updated when you get hired.</p>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Tidak ada afiliasi perusahaan</h3>
+              <p className="text-gray-600 text-center">Anda saat ini tidak terafiliasi dengan perusahaan manapun. Ini akan diperbarui ketika Anda diterima bekerja.</p>
             </CardContent>
           </Card>
         )}

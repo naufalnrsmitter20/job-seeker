@@ -73,19 +73,19 @@ export function ProfileHeader({ user, employee }: { user: User; employee: Employ
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Update Profile Picture</DialogTitle>
+                  <DialogTitle>Edit Foto Profil</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="photo">Choose Photo</Label>
+                    <Label htmlFor="photo">Pilih Foto</Label>
                     <Input onChange={(e) => setImgValue(e.target.files?.[0])} id="photo" type="file" accept="image/*" />
                   </div>
                   <div className="flex justify-end gap-2">
                     <Button variant="outline" onClick={() => setIsEditingPhoto(false)}>
-                      Cancel
+                      Batal
                     </Button>
                     <Button disabled={uploading} onClick={handleUpload} className="bg-blue-600 hover:bg-blue-700">
-                      {uploading ? "Uploading..." : "Upload"}
+                      {uploading ? "Mengunggah..." : "Unggah"}
                     </Button>
                   </div>
                 </div>
@@ -101,7 +101,7 @@ export function ProfileHeader({ user, employee }: { user: User; employee: Employ
                 {user.verified && (
                   <Badge className="bg-green-100 text-green-700 flex items-center gap-1">
                     <Verified className="h-3 w-3" />
-                    Verified
+                    Terverifikasi
                   </Badge>
                 )}
               </div>
@@ -124,15 +124,15 @@ export function ProfileHeader({ user, employee }: { user: User; employee: Employ
               {employee.Company && (
                 <div className="flex items-center gap-2 text-gray-600">
                   <MapPin className="h-4 w-4" />
-                  Currently at {employee.Company.name}
+                  Saat ini di {employee.Company.name}
                 </div>
               )}
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <Badge className="bg-blue-100 text-blue-700">Job Seeker</Badge>
+              <Badge className="bg-blue-100 text-blue-700">Pencari Kerja</Badge>
               {employee.gender && <Badge variant="outline">{employee.gender}</Badge>}
-              <Badge variant="outline">Member since {formatDate(user.createdAt)}</Badge>
+              <Badge variant="outline">Member sejak {formatDate(user.createdAt)}</Badge>
             </div>
           </div>
 
@@ -140,11 +140,11 @@ export function ProfileHeader({ user, employee }: { user: User; employee: Employ
           <div className="grid grid-cols-2 gap-4 md:grid-cols-1 md:w-48">
             <div className="text-center p-4 bg-white rounded-lg border border-blue-100">
               <div className="text-2xl font-bold text-blue-900">0</div>
-              <div className="text-sm text-gray-600">Portfolios</div>
+              <div className="text-sm text-gray-600">Portofolio</div>
             </div>
             <div className="text-center p-4 bg-white rounded-lg border border-blue-100">
               <div className="text-2xl font-bold text-blue-900">0</div>
-              <div className="text-sm text-gray-600">Applications</div>
+              <div className="text-sm text-gray-600">Pekerjaan</div>
             </div>
           </div>
         </div>

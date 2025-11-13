@@ -19,6 +19,8 @@ import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 export function JobsPageClient({ jobs, totalJobs, currentPage, pageSize, searchParams }: JobsPageClientProps) {
   const router = useRouter();
   const params = useSearchParams();
+  const [localSalaryMin, setLocalSalaryMin] = useState(searchParams.salaryMin || "");
+  const [localSalaryMax, setLocalSalaryMax] = useState(searchParams.salaryMax || "");
 
   const [searchQuery, setSearchQuery] = useState(searchParams.q || "");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -122,26 +124,21 @@ export function JobsPageClient({ jobs, totalJobs, currentPage, pageSize, searchP
       <div>
         <h3 className="font-medium text-gray-900 mb-3">Rentang Gaji</h3>
         <div className="space-y-2">
-          <Input
-            placeholder="Min gaji"
-            type="number"
-            value={searchParams.salaryMin || ""}
-            onChange={(e) =>
+          <Input placeholder="Min gaji" type="number" value={localSalaryMin} onChange={(e) => setLocalSalaryMin(e.target.value)} />
+          <Input placeholder="Max gaji" type="number" value={localSalaryMax} onChange={(e) => setLocalSalaryMax(e.target.value)} />
+
+          <Button
+            variant="secondary"
+            className="w-full"
+            onClick={() => {
               updateSearchParams({
-                salaryMin: e.target.value || undefined,
-              })
-            }
-          />
-          <Input
-            placeholder="Max gaji"
-            type="number"
-            value={searchParams.salaryMax || ""}
-            onChange={(e) =>
-              updateSearchParams({
-                salaryMax: e.target.value || undefined,
-              })
-            }
-          />
+                salaryMin: localSalaryMin || undefined,
+                salaryMax: localSalaryMax || undefined,
+              });
+            }}
+          >
+            Apply Filter
+          </Button>
         </div>
       </div>
 

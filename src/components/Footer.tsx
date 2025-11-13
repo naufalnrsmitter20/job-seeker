@@ -31,8 +31,8 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tips" className="hover:text-white">
-                    Tips Karir
+                  <Link href="/about" className="hover:text-white">
+                    Tentang Kami
                   </Link>
                 </li>
               </ul>
@@ -41,18 +41,13 @@ export default function Footer() {
               <h3 className="font-semibold mb-4">Untuk Perusahaan</h3>
               <ul className="space-y-2 text-blue-200">
                 <li>
-                  <Link href="/post-job" className="hover:text-white">
+                  <Link href="/hrd" className="hover:text-white">
                     Pasang Lowongan
                   </Link>
                 </li>
                 <li>
-                  <Link href="/candidates" className="hover:text-white">
+                  <Link href="/hrd" className="hover:text-white">
                     Cari Kandidat
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/pricing" className="hover:text-white">
-                    Harga
                   </Link>
                 </li>
               </ul>
@@ -61,18 +56,8 @@ export default function Footer() {
               <h3 className="font-semibold mb-4">Bantuan</h3>
               <ul className="space-y-2 text-blue-200">
                 <li>
-                  <Link href="/help" className="hover:text-white">
-                    Pusat Bantuan
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-white">
+                  <Link href="https://wa.me/6282141341737" className="hover:text-white">
                     Kontak Kami
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/privacy" className="hover:text-white">
-                    Kebijakan Privasi
                   </Link>
                 </li>
               </ul>
